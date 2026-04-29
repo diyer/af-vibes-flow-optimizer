@@ -70,9 +70,25 @@ Scan commit authors against the team roster emails. If multiple team members app
 
 ### G2. commit_velocity — Commit frequency and volume (last 90 days)
 
+**Important:** The GitHub API returns max 100 commits per page. You must paginate to get accurate counts — a single page will severely undercount active repos.
+
 ```bash
-curl -s {AUTH_HEADER} "{API_BASE}/repos/{ORG}/{REPO}/commits?per_page=100&sha={BRANCH}&since={90_DAYS_AGO_ISO}" \
-  | python3 -c "
+page=1
+all_commits="[]"
+while true; do
+  batch=$(curl -s {AUTH_HEADER} "{API_BASE}/repos/{ORG}/{REPO}/commits?per_page=100&sha={BRANCH}&since={90_DAYS_AGO_ISO}&page=$page")
+  count=$(echo "$batch" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))" 2>/dev/null || echo 0)
+  if [ "$count" -eq 0 ]; then break; fi
+  all_commits=$(echo "$all_commits" "$batch" | python3 -c "
+import sys, json
+a = json.load(sys.stdin)
+b = json.load(sys.stdin)
+print(json.dumps(a + b))
+")
+  if [ "$count" -lt 100 ]; then break; fi
+  page=$((page + 1))
+done
+echo "$all_commits" | python3 -c "
 import sys, json
 commits = json.load(sys.stdin)
 print(f'Total commits: {len(commits)}')
@@ -85,7 +101,7 @@ if commits:
     print('\\nCommits per author:')
     for email, count in by_author.most_common():
         print(f'  {count:4d}  {email}')
-    print(f'\\nCommits per day (sample):')
+    print(f'\\nCommits per day (last 14 days):')
     for date, count in sorted(by_week.items())[-14:]:
         print(f'  {date}: {count}')
 "
@@ -140,14 +156,31 @@ for cat, count in sorted(categories.items(), key=lambda x: -x[1]):
 
 ### G4. author_contribution — Per-developer commit activity
 
-Same data as G2 — group by author email and cross-reference with the GUS team roster.
+Use the **fully paginated** data from G2 — group by author email and cross-reference with the GUS team roster. Do not re-fetch with a single page.
 
 **Per-author focus area (last 20 commits by author):**
+
+For drilling into a specific author's recent work, paginate here too:
 ```bash
-curl -s {AUTH_HEADER} "{API_BASE}/repos/{ORG}/{REPO}/commits?per_page=100&sha={BRANCH}&since={90_DAYS_AGO_ISO}&author={AUTHOR_EMAIL}" \
-  | python3 -c "
+page=1
+author_commits="[]"
+while true; do
+  batch=$(curl -s {AUTH_HEADER} "{API_BASE}/repos/{ORG}/{REPO}/commits?per_page=100&sha={BRANCH}&since={90_DAYS_AGO_ISO}&author={AUTHOR_EMAIL}&page=$page")
+  count=$(echo "$batch" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))" 2>/dev/null || echo 0)
+  if [ "$count" -eq 0 ]; then break; fi
+  author_commits=$(echo "$author_commits" "$batch" | python3 -c "
+import sys, json
+a = json.load(sys.stdin)
+b = json.load(sys.stdin)
+print(json.dumps(a + b))
+")
+  if [ "$count" -lt 100 ]; then break; fi
+  page=$((page + 1))
+done
+echo "$author_commits" | python3 -c "
 import sys, json
 commits = json.load(sys.stdin)
+print(f'Total commits by author: {len(commits)}')
 for c in commits[:20]:
     print(c['commit']['message'].split('\n')[0])
 "
@@ -346,5 +379,5 @@ The real power is correlating both sources:
 - **Privacy:** Show team-level patterns and aggregates. Don't call out individual commit counts as performance metrics — frame as workload distribution and knowledge concentration.
 - **Rate limits:** GitHub.com allows 60 unauthenticated requests/hour. Internal hosts are more generous but be mindful. Use `per_page=100` to minimize calls.
 - **Auth for internal hosts:** Use `git credential fill` to extract tokens. This reuses the EM's existing git credentials — no extra setup.
-- **Pagination:** The GitHub API returns max 100 items per page. For repos with very high commit volume, the 100-commit sample is sufficient for pattern analysis.
+- **Pagination:** The GitHub API returns max 100 items per page. For commit queries (G2, G4), you **must** paginate through all pages to get accurate counts. A single page will severely undercount active repos (e.g., reporting 5 commits when the real number is 78). Loop with `page=1,2,3...` until an empty response.
 - **PR data is powerful.** The pulls endpoint gives open-to-merge time, author/reviewer distribution, and size — data that raw commit history can't provide.

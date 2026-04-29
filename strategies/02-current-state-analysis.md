@@ -12,13 +12,14 @@ Build a data-backed picture of the team's actual flow from **two equal perspecti
 
 ## Step 1: Resolve repositories
 
-Ask the EM (if not already known from Phase 1):
+The EM should have provided a complete list of repos in Phase 1 (Question 3). If not, ask now:
 ```
-Which repositories does your team primarily work in?
-(e.g., git.soma.salesforce.com/mobile/mobile-sdk)
+Which repositories does your team actively commit to? Please include everything —
+primary app repos, infrastructure, helm charts, config, tooling, CLI tools,
+not just the main codebase.
 ```
 
-Parse each URL into code host, org, and repo. Determine the API base URL and auth method per `data/git-queries.md`. Validate by checking recent commit authors against the GUS roster using Git query **G1**.
+Parse each URL into code host, org, and repo. Determine the API base URL and auth method per `data/git-queries.md`. Validate by checking recent commit authors against the GUS roster using Git query **G1**. Run all subsequent Git queries against **every repo** the EM listed — not just the primary one.
 
 ## Step 2: Run GUS sprint-scoped queries
 
@@ -28,6 +29,23 @@ Run these **sequentially** (GUS constraint):
 2. **#5 work_type_distribution** — Bug/story/investigation mix (last 3 sprints)
 3. **#6 stale_items** — Open items not modified in 7+ days
 4. **#7 carryover_items** — Items open 30+ days still in active sprint
+
+## Step 2b: Calculate sprint age and calibrate interpretation
+
+From the **#4 active_sprint_status** query, extract the sprint's `Start_Date__c`. Calculate:
+```
+days_into_sprint = TODAY - Start_Date__c
+```
+
+Use sprint age to calibrate how you interpret status distribution — especially the % of items in "New":
+
+| Sprint Age | % "New" Threshold | Interpretation |
+|------------|------------------|----------------|
+| Days 1-3 | Any % is normal | Sprint just started. Do not flag high "New" counts. |
+| Days 4-7 | Flag if >50% New | Mid-sprint — work should be getting picked up. |
+| Days 8+ | Flag if >30% New | Late sprint — significant "New" backlog is a concern. |
+
+Always state the sprint age when presenting status distribution: "Sprint 2026.05a is **{N} days old** (started {date})." This gives the EM proper context to interpret the numbers.
 
 ## Step 3: Run GUS release-scoped queries
 
@@ -73,6 +91,21 @@ This is the critical step. Don't present GUS and Git as separate reports — syn
 
 **Flag stages where both sources agree** — those are high-confidence bottlenecks.
 **Flag stages where sources disagree** — those need the EM's interpretation.
+
+### Conditional interpretation based on GUS sync practice
+
+Use the EM's answer from Phase 1 (Question 2 — GUS sync practice) to gate conclusions:
+
+**If the team syncs GUS in real-time:**
+- GUS status is a reliable signal. Stale "In Progress" items likely mean stale work.
+- Cross-referencing GUS status with Git activity is valid and high-confidence.
+
+**If the team uses batch updates, @mentions in PRs, or sprint-end syncing:**
+- GUS status will lag behind actual code progress. This is expected, not a problem.
+- **Do not** conclude that stale GUS items mean stale work. Instead, note: "This team updates GUS asynchronously — GUS status may not reflect current code progress."
+- **Do not** flag "GUS hygiene" as an issue. The team's workflow is intentional.
+- For the Code Development and Code Review stages, **rely primarily on Git signals** (commit activity, PR activity) rather than GUS status timestamps.
+- Where GUS and Git disagree, explain the likely cause (async updates) rather than flagging it as a discrepancy that needs investigation.
 
 ## Step 7: Present the Flow Dashboard
 
