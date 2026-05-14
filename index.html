@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[AFV][264] AFV Vibes 2.0 — Epic Tracker</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+      padding: 32px 16px 64px;
+    }
+
+    a { color: #58a6ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Header ── */
+    .page-header {
+      max-width: 960px;
+      margin: 0 auto 32px;
+    }
+    .breadcrumb {
+      font-size: 13px;
+      color: #8b949e;
+      margin-bottom: 8px;
+    }
+    .epic-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #f0f6fc;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .epic-badge {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: #1f6feb;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .epic-meta {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #8b949e;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .epic-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* ── Overall progress ── */
+    .overall-progress {
+      max-width: 960px;
+      margin: 0 auto 28px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 18px 22px;
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #8b949e;
+    }
+    .progress-header strong { color: #e6edf3; }
+    .progress-bar-track {
+      height: 8px;
+      background: #21262d;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #238636, #2ea043);
+      transition: width 0.4s ease;
+    }
+
+    /* ── Work item cards ── */
+    .wi-list {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .wi-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+    .wi-card:hover { border-color: #58a6ff44; }
+    .wi-card.expanded { border-color: #1f6feb88; }
+
+    .wi-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .wi-chevron {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      color: #8b949e;
+      transition: transform 0.2s;
+    }
+    .wi-card.expanded .wi-chevron { transform: rotate(90deg); }
+
+    .wi-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #8b949e;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .wi-subject {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 600;
+      color: #e6edf3;
+      line-height: 1.4;
+    }
+    .wi-subject a { color: #e6edf3; }
+    .wi-subject a:hover { color: #58a6ff; }
+
+    .wi-status {
+      flex-shrink: 0;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .status-new       { background: #21262d; color: #8b949e; border: 1px solid #30363d; }
+    .status-active    { background: #0d419d22; color: #58a6ff; border: 1px solid #1f6feb55; }
+    .status-inreview  { background: #9e6a0322; color: #d29922; border: 1px solid #9e6a0355; }
+    .status-closed    { background: #23863622; color: #3fb950; border: 1px solid #23863655; }
+    .status-qa        { background: #6e40c922; color: #d2a8ff; border: 1px solid #6e40c955; }
+
+    .wi-completion {
+      flex-shrink: 0;
+      font-size: 12px;
+      color: #8b949e;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mini-bar {
+      width: 48px;
+      height: 4px;
+      background: #21262d;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .mini-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: #2ea043;
+    }
+
+    /* ── Expanded body ── */
+    .wi-body {
+      display: none;
+      border-top: 1px solid #21262d;
+    }
+    .wi-card.expanded .wi-body { display: block; }
+
+    .wi-body-inner {
+      padding: 18px 22px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 640px) {
+      .wi-body-inner { grid-template-columns: 1fr; }
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #8b949e;
+      margin-bottom: 10px;
+    }
+
+    /* AC list */
+    .ac-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .ac-list li {
+      font-size: 13px;
+      color: #c9d1d9;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.5;
+    }
+    .ac-list li::before {
+      content: "•";
+      color: #58a6ff;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Child WI list */
+    .child-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .child-item {
+      background: #0d1117;
+      border: 1px solid #21262d;
+      border-radius: 6px;
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .child-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: #8b949e;
+      white-space: nowrap;
+    }
+    .child-subject {
+      flex: 1;
+      font-size: 12px;
+      color: #c9d1d9;
+    }
+    .child-status {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .empty-children {
+      font-size: 12px;
+      color: #484f58;
+      font-style: italic;
+      padding: 10px 0;
+    }
+
+    /* GUS link row */
+    .wi-footer {
+      padding: 10px 22px 14px;
+      font-size: 12px;
+      color: #8b949e;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      border-top: 1px solid #21262d;
+    }
+
+    /* ── Legend ── */
+    .legend {
+      max-width: 960px;
+      margin: 28px auto 0;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      color: #8b949e;
+      align-items: center;
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+  </style>
+</head>
+<body>
+
+<!-- ── Page header ── -->
+<header class="page-header">
+  <div class="breadcrumb">Einstein for Developers &rsaquo; AFV &rsaquo; 264</div>
+  <div class="epic-title">
+    [AFV][264] AFV Vibes 2.0
+    <span class="epic-badge">Epic</span>
+  </div>
+  <div class="epic-meta">
+    <span>🏷 Einstein for Developers</span>
+    <span>👥 Agentforce Vibes Team</span>
+    <span>📅 June Release</span>
+    <span><a href="https://gus.lightning.force.com/lightning/r/ADM_Epic__c/a3QEE000002LVE92AO/view" target="_blank">Open in GUS ↗</a></span>
+  </div>
+</header>
+
+<!-- ── Overall progress ── -->
+<div class="overall-progress">
+  <div class="progress-header">
+    <span>Overall completion &mdash; <strong id="overall-label">0 of 9 parent WIs closed</strong></span>
+    <strong id="overall-pct">0%</strong>
+  </div>
+  <div class="progress-bar-track">
+    <div class="progress-bar-fill" id="overall-bar" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- ── Work item list ── -->
+<div class="wi-list" id="wi-list"></div>
+
+<!-- ── Legend ── -->
+<div class="legend">
+  <span style="font-weight:600; color:#c9d1d9;">Status:</span>
+  <div class="legend-item"><span class="wi-status status-new">New</span></div>
+  <div class="legend-item"><span class="wi-status status-active">Active</span></div>
+  <div class="legend-item"><span class="wi-status status-inreview">In Review</span></div>
+  <div class="legend-item"><span class="wi-status status-qa">QA</span></div>
+  <div class="legend-item"><span class="wi-status status-closed">Closed</span></div>
+</div>
+
+<script>
+const GUS_BASE = "https://gus.lightning.force.com/lightning/r/ADM_Work__c";
+
+const parentWIs = [
+  {
+    id: "a07EE00002a3FKBYA2",
+    name: "W-22497195",
+    subject: "Talk to an AI agent in the sidebar - Multi turn chat with tool calls",
+    status: "New",
+    ac: [
+      "Read",
+      "Write",
+      "Run code",
+      "Show agent reasoning – Nice to have",
+      "Stop agent mid-response",
+      "Support multiple conversations via tabs",
+      "Export conversations",
+      "Diff view Allow Accept / Reject – Need design (Use Vibes 1.0 as ref)",
+      "Inline - stretch"
+    ],
+    children: []
+  },
+  {
+    id: "a07EE00002a3HJxYAM",
+    name: "W-22497196",
+    subject: "End to end testing",
+    status: "New",
+    ac: [
+      "End to end test using Claude Agent SDK",
+      "End to end test with Mastra Agent SDK"
+    ],
+    children: []
+  },
+  {
+    id: "a07EE00002a3TURYA2",
+    name: "W-22497198",
+    subject: "Agent SDK Integration with Claude and Mastra",
+    status: "New",
+    ac: [
+      "End to end integration with LLM for Claude models through Mastra",
+      "End to end integration with LLM for Claude models through Claude",
+      "Support for passing rules, skills and MCP tools through Mastra",
+      "Support for passing rules, skills and MCP tools through Claude"
+    ],
+    children: []
+  },
+  {
+    id: "a07EE00002a3PUOYA2",
+    name: "W-22497206",
+    subject: "Support for Tools, MCP & Context",
+    status: "New",
+    ac: [
+      "Out of Box Salesforce skill in AFV",
+      "Out of box global rule in AFV",
+      "Custom rules",
+      "Out of box DX MCP server in AFV",
+      "Out of box Platform Hosted DX MCP servers in AFV",
+      "Abilities - Support dynamic tool loading based on relevance",
+      "Context management",
+      "Add image/text/attachments as context",
+      "Automatic compaction (Mastra may need special handling to trigger compaction)",
+      "Add code selections as context",
+      "Add terminal output as context",
+      "Add files as context"
+    ],
+    children: []
+  },
+  {
+    id: "a07EE00002a3a1BYAQ",
+    name: "W-22497229",
+    subject: "Permissions",
+    status: "New",
+    ac: [
+      "Per mode per tool settings",
+      "Safe commands",
+      "File protections"
+    ],
+    children: []
+  },
+  {
+    id: "a07EE00002a37PaYAI",
+    name: "W-22497295",
+    subject: "Planner",
+    status: "New",
+    ac: [
+      "Describe idea → generate full Plan",
+      "Break Plan into tasks with dependencies",
+      "Support parallel execution where possible",
+      "Review/approve plan before execution",
+      "Show real-time view of each sub-agent's activity (Kanban view)",
+      "Auto-retry failed tasks",
+      "Accept changes"
+    ],
+    children: []
+  },
+  {
+    id: "a07EE00002a3Ij6YAE",
+    name: "W-22497279",
+    subject: "Add monetization support",
+    status: "New",
+    ac: [
+      "Headers and feature id support",
+      "Rate limiting behaviors",
+      "Model selection for different monetization use case"
+    ],
+    children: []
+  },
+  {
+    id: "a07EE00002a3JDuYAM",
+    name: "W-22497283",
+    subject: "Port existing features",
+    status: "New",
+    ac: [
+      "IAC",
+      "Live preview",
+      "Metadata Visualization"
+    ],
+    children: []
+  },
+  {
+    id: "a07EE00002a3XmbYAE",
+    name: "W-22497285",
+    subject: "Telemetry and logging",
+    status: "New",
+    ac: [
+      "Logs capturing extension output",
+      "Trace logs with request response",
+      "Telemetry for all AFV use cases"
+    ],
+    children: []
+  }
+];
+
+const CLOSED_STATUSES = new Set(["Closed", "Completed", "Fixed", "Never", "Duplicate", "By Design", "Cannot Reproduce"]);
+
+function statusClass(s) {
+  if (!s) return "status-new";
+  const l = s.toLowerCase();
+  if (CLOSED_STATUSES.has(s)) return "status-closed";
+  if (l.includes("review") || l.includes("pending")) return "status-inreview";
+  if (l === "qa" || l.includes("qa")) return "status-qa";
+  if (l === "active" || l === "in progress") return "status-active";
+  return "status-new";
+}
+
+function buildCard(wi) {
+  const total = wi.children.length;
+  const done = wi.children.filter(c => CLOSED_STATUSES.has(c.status)).length;
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+  const card = document.createElement("div");
+  card.className = "wi-card";
+  card.dataset.id = wi.id;
+
+  // ── Header ──
+  const header = document.createElement("div");
+  header.className = "wi-header";
+
+  const chevron = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  chevron.setAttribute("class", "wi-chevron");
+  chevron.setAttribute("viewBox", "0 0 16 16");
+  chevron.setAttribute("fill", "currentColor");
+  chevron.innerHTML = '<path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"/>';
+
+  const nameEl = document.createElement("span");
+  nameEl.className = "wi-name";
+  nameEl.textContent = wi.name;
+
+  const subjectEl = document.createElement("div");
+  subjectEl.className = "wi-subject";
+  subjectEl.innerHTML = `<a href="${GUS_BASE}/${wi.id}/view" target="_blank">${wi.subject}</a>`;
+
+  const statusEl = document.createElement("span");
+  statusEl.className = `wi-status ${statusClass(wi.status)}`;
+  statusEl.textContent = wi.status || "New";
+
+  const completionEl = document.createElement("div");
+  completionEl.className = "wi-completion";
+  completionEl.innerHTML = `
+    <div class="mini-bar"><div class="mini-bar-fill" style="width:${pct}%"></div></div>
+    <span>${done}/${total} closed</span>
+  `;
+
+  header.append(chevron, nameEl, subjectEl, statusEl, completionEl);
+
+  // ── Body ──
+  const body = document.createElement("div");
+  body.className = "wi-body";
+
+  const inner = document.createElement("div");
+  inner.className = "wi-body-inner";
+
+  // AC column
+  const acCol = document.createElement("div");
+  const acTitle = document.createElement("div");
+  acTitle.className = "section-title";
+  acTitle.textContent = "Acceptance Criteria";
+  const acList = document.createElement("ul");
+  acList.className = "ac-list";
+  wi.ac.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    acList.appendChild(li);
+  });
+  acCol.append(acTitle, acList);
+
+  // Children column
+  const childCol = document.createElement("div");
+  const childTitle = document.createElement("div");
+  childTitle.className = "section-title";
+  childTitle.textContent = `Child Work Items (${total})`;
+  childCol.appendChild(childTitle);
+
+  if (total === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty-children";
+    empty.textContent = "No child work items yet.";
+    childCol.appendChild(empty);
+  } else {
+    const childList = document.createElement("div");
+    childList.className = "child-list";
+    wi.children.forEach(c => {
+      const item = document.createElement("div");
+      item.className = "child-item";
+      item.innerHTML = `
+        <span class="child-name">${c.name}</span>
+        <span class="child-subject"><a href="${GUS_BASE}/${c.id}/view" target="_blank">${c.subject}</a></span>
+        <span class="child-status wi-status ${statusClass(c.status)}">${c.status || "New"}</span>
+      `;
+      childList.appendChild(item);
+    });
+    childCol.appendChild(childList);
+  }
+
+  inner.append(acCol, childCol);
+
+  // Footer
+  const footer = document.createElement("div");
+  footer.className = "wi-footer";
+  footer.innerHTML = `<a href="${GUS_BASE}/${wi.id}/view" target="_blank">Open ${wi.name} in GUS ↗</a>`;
+
+  body.append(inner, footer);
+  card.append(header, body);
+
+  header.addEventListener("click", () => {
+    card.classList.toggle("expanded");
+  });
+
+  return card;
+}
+
+function render() {
+  const list = document.getElementById("wi-list");
+  parentWIs.forEach(wi => list.appendChild(buildCard(wi)));
+
+  // Overall progress
+  const closed = parentWIs.filter(wi => CLOSED_STATUSES.has(wi.status)).length;
+  const total = parentWIs.length;
+  const pct = Math.round((closed / total) * 100);
+  document.getElementById("overall-label").textContent = `${closed} of ${total} parent WIs closed`;
+  document.getElementById("overall-pct").textContent = `${pct}%`;
+  document.getElementById("overall-bar").style.width = `${pct}%`;
+}
+
+render();
+</script>
+</body>
+</html>
