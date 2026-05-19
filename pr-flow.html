@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AFV — PR Flow Report</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+      padding: 32px 16px 64px;
+    }
+    a { color: #58a6ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .page-header { max-width: 1080px; margin: 0 auto 28px; }
+    .breadcrumb { font-size: 13px; color: #8b949e; margin-bottom: 8px; }
+    .page-title { font-size: 26px; font-weight: 700; color: #f0f6fc; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: #1f6feb; color: #fff; white-space: nowrap; }
+    .page-meta { margin-top: 8px; font-size: 13px; color: #8b949e; display: flex; gap: 20px; flex-wrap: wrap; }
+
+    .section { max-width: 1080px; margin: 0 auto 36px; }
+    .section-heading {
+      font-size: 15px; font-weight: 700; color: #f0f6fc;
+      border-bottom: 1px solid #21262d; padding-bottom: 10px; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .repo-tag {
+      font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 12px;
+      background: #161b22; border: 1px solid #30363d; color: #8b949e;
+    }
+
+    /* ── Tables ── */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .data-table th {
+      text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.05em; color: #8b949e; padding: 8px 12px;
+      border-bottom: 1px solid #21262d; white-space: nowrap;
+    }
+    .data-table td { padding: 10px 12px; border-bottom: 1px solid #161b22; vertical-align: middle; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #161b22; }
+    .data-table .total-row td { border-top: 1px solid #30363d; font-weight: 600; color: #f0f6fc; }
+
+    .card {
+      background: #161b22; border: 1px solid #30363d; border-radius: 10px;
+      overflow: hidden; margin-bottom: 12px;
+    }
+    .card-inner { padding: 4px 0; }
+
+    /* ── Avatars / engineer pills ── */
+    .eng { display: inline-flex; align-items: center; gap: 6px; }
+    .eng img { width: 20px; height: 20px; border-radius: 50%; }
+    .eng-name { font-weight: 500; }
+
+    /* ── Status badges ── */
+    .s-ready    { display:inline-block; font-size:11px; font-weight:600; padding:2px 8px; border-radius:20px; background:#238636; color:#fff; }
+    .s-draft    { display:inline-block; font-size:11px; font-weight:600; padding:2px 8px; border-radius:20px; background:#21262d; color:#8b949e; border:1px solid #30363d; }
+    .s-approved { display:inline-block; font-size:11px; font-weight:600; padding:2px 8px; border-radius:20px; background:#23863622; color:#3fb950; border:1px solid #23863655; }
+    .s-pending  { display:inline-block; font-size:11px; font-weight:600; padding:2px 8px; border-radius:20px; background:#9e6a0322; color:#d29922; border:1px solid #9e6a0355; }
+    .s-changes  { display:inline-block; font-size:11px; font-weight:600; padding:2px 8px; border-radius:20px; background:#da363022; color:#f85149; border:1px solid #da363055; }
+
+    /* ── Age bar ── */
+    .age-bar-wrap { display: flex; align-items: center; gap: 8px; }
+    .age-bar { height: 6px; border-radius: 3px; min-width: 4px; }
+    .age-ok   { background: #238636; }
+    .age-warn { background: #d29922; }
+    .age-crit { background: #f85149; }
+    .age-label { font-size: 12px; white-space: nowrap; }
+
+    /* ── Approval rate bar ── */
+    .rate-wrap { display: flex; align-items: center; gap: 8px; }
+    .rate-bar-track { width: 80px; height: 6px; background: #21262d; border-radius: 3px; overflow: hidden; }
+    .rate-bar-fill { height: 100%; border-radius: 3px; background: #2ea043; }
+    .rate-label { font-size: 12px; }
+
+    /* ── Sub-section label ── */
+    .sub-label {
+      font-size: 12px; font-weight: 700; color: #8b949e; text-transform: uppercase;
+      letter-spacing: 0.05em; padding: 10px 16px 4px; background: #0d1117;
+      border-bottom: 1px solid #21262d;
+    }
+
+    .num { font-variant-numeric: tabular-nums; }
+    .muted { color: #8b949e; }
+    .highlight { color: #f85149; font-weight: 600; }
+    .good { color: #3fb950; font-weight: 600; }
+
+    .pr-link { font-size: 12px; color: #8b949e; font-family: monospace; }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="breadcrumb">Agentforce Vibes Team &rsaquo; Engineering Metrics</div>
+  <div class="page-title">
+    PR Flow Report
+    <span class="badge">Last 4 Weeks</span>
+  </div>
+  <div class="page-meta">
+    <span>📅 Apr 20 – May 18, 2026</span>
+    <span>👥 Agentforce Vibes Team engineers only</span>
+    <span>🗂 3 repos</span>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════
+     PART 1 — MERGED PRs BY AUTHOR
+═══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-heading">
+    Part 1 — Merged PRs by Author
+  </div>
+
+  <!-- afv-v4.0 -->
+  <div class="card">
+    <div class="sub-label">salesforcedx-vscode-einstein-gpt &mdash; afv-v4.0 &nbsp;·&nbsp; 34 merged PRs</div>
+    <div class="card-inner">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Engineer</th>
+            <th>Merged PRs</th>
+            <th>Avg days to merge</th>
+            <th>Avg size (lines)</th>
+            <th>Max size (lines)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="eng"><img src="https://github.com/mohanraj-r.png" onerror="this.style.display='none'"><span class="eng-name">mohanraj-r</span></span></td><td class="num">16</td><td class="num">1.3d</td><td class="num">5,051</td><td class="num highlight">16,695</td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/mgutin.png" onerror="this.style.display='none'"><span class="eng-name">mgutin</span></span></td><td class="num">6</td><td class="num good">0.5d</td><td class="num">289</td><td class="num">943</td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/CristiCanizales.png" onerror="this.style.display='none'"><span class="eng-name">CristiCanizales</span></span></td><td class="num">3</td><td class="num">1.9d</td><td class="num">2,061</td><td class="num">4,352</td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/jgellin-sf.png" onerror="this.style.display='none'"><span class="eng-name">jgellin-sf</span></span></td><td class="num">3</td><td class="num good">0.4d</td><td class="num">1,631</td><td class="num">3,080</td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/mingxuanzhangsfdx.png" onerror="this.style.display='none'"><span class="eng-name">mingxuanzhangsfdx</span></span></td><td class="num">3</td><td class="num good">0.7d</td><td class="num">2,182</td><td class="num">2,571</td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/klewis-sfdc.png" onerror="this.style.display='none'"><span class="eng-name">klewis-sfdc</span></span></td><td class="num">2</td><td class="num highlight">7.8d</td><td class="num">1,414</td><td class="num">2,394</td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/lahernandezb.png" onerror="this.style.display='none'"><span class="eng-name">lahernandezb</span></span></td><td class="num">1</td><td class="num good">0.8d</td><td class="num">2</td><td class="num">2</td></tr>
+          <tr class="total-row"><td>Team total</td><td class="num">34</td><td class="num muted">1.6d avg</td><td class="num muted">3,234 avg</td><td class="muted">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- main -->
+  <div class="card">
+    <div class="sub-label">salesforcedx-vscode-einstein-gpt &mdash; main &nbsp;·&nbsp; 6 merged PRs (AFV engineers)</div>
+    <div class="card-inner">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Engineer</th>
+            <th>Merged PRs</th>
+            <th>Avg days to merge</th>
+            <th>Avg size (lines)</th>
+            <th>Max size (lines)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="eng"><img src="https://github.com/jasminejin-sfdc.png" onerror="this.style.display='none'"><span class="eng-name">jasminejin-sfdc</span></span></td><td class="num">3</td><td class="num">2.3d</td><td class="num">166</td><td class="num">306</td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/klewis-sfdc.png" onerror="this.style.display='none'"><span class="eng-name">klewis-sfdc</span></span></td><td class="num">1</td><td class="num">2.8d</td><td class="num">540</td><td class="num">540</td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/jgellin-sf.png" onerror="this.style.display='none'"><span class="eng-name">jgellin-sf</span></span></td><td class="num">1</td><td class="num highlight">22.3d</td><td class="num">43</td><td class="num">43</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- agentic-dx -->
+  <div class="card">
+    <div class="sub-label">agentic-dx &nbsp;·&nbsp; 1 merged PR (AFV engineers)</div>
+    <div class="card-inner">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Engineer</th>
+            <th>Merged PRs</th>
+            <th>Avg days to merge</th>
+            <th>Avg size (lines)</th>
+            <th>Max size (lines)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="eng"><img src="https://github.com/jgellin-sf.png" onerror="this.style.display='none'"><span class="eng-name">jgellin-sf</span></span></td><td class="num">1</td><td class="num good">&lt;0.1d</td><td class="num">51</td><td class="num">51</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PART 2 — OPEN PRs
+═══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-heading">Part 2 — Open PRs</div>
+
+  <!-- afv-v4.0 open -->
+  <div class="card">
+    <div class="sub-label">salesforcedx-vscode-einstein-gpt &mdash; afv-v4.0</div>
+    <div class="card-inner">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>PR</th>
+            <th>Author</th>
+            <th>Size (lines)</th>
+            <th>Age</th>
+            <th>Status</th>
+            <th>Review status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a class="pr-link" href="https://github.com/forcedotcom/salesforcedx-vscode-einstein-gpt/pull/2119" target="_blank">#2119</a></td>
+            <td>lahernandezb</td><td class="num">1,286</td>
+            <td><div class="age-bar-wrap"><div class="age-bar age-crit" style="width:68px"></div><span class="age-label highlight">17d</span></div></td>
+            <td><span class="s-ready">Ready</span></td>
+            <td><span class="s-pending">mohanraj-r 2× comments, no approval</span></td>
+          </tr>
+          <tr>
+            <td><a class="pr-link" href="https://github.com/forcedotcom/salesforcedx-vscode-einstein-gpt/pull/2150" target="_blank">#2150</a></td>
+            <td>klewis-sfdc</td><td class="num">681</td>
+            <td><div class="age-bar-wrap"><div class="age-bar age-warn" style="width:28px"></div><span class="age-label">7d</span></div></td>
+            <td><span class="s-draft">Draft</span></td>
+            <td><span class="muted">No reviews</span></td>
+          </tr>
+          <tr>
+            <td><a class="pr-link" href="https://github.com/forcedotcom/salesforcedx-vscode-einstein-gpt/pull/2155" target="_blank">#2155</a></td>
+            <td>mohanraj-r</td><td class="num highlight">14,181</td>
+            <td><div class="age-bar-wrap"><div class="age-bar age-warn" style="width:20px"></div><span class="age-label">5d</span></div></td>
+            <td><span class="s-ready">Ready</span></td>
+            <td><span class="s-pending">3 reviewers commented, no approval</span></td>
+          </tr>
+          <tr>
+            <td><a class="pr-link" href="https://github.com/forcedotcom/salesforcedx-vscode-einstein-gpt/pull/2164" target="_blank">#2164</a></td>
+            <td>mohanraj-r</td><td class="num">119</td>
+            <td><div class="age-bar-wrap"><div class="age-bar age-warn" style="width:16px"></div><span class="age-label">4d</span></div></td>
+            <td><span class="s-ready">Ready</span></td>
+            <td><span class="muted">No reviews</span></td>
+          </tr>
+          <tr>
+            <td><a class="pr-link" href="https://github.com/forcedotcom/salesforcedx-vscode-einstein-gpt/pull/2172" target="_blank">#2172</a></td>
+            <td>mingxuanzhangsfdx</td><td class="num">4,301</td>
+            <td><div class="age-bar-wrap"><div class="age-bar age-ok" style="width:12px"></div><span class="age-label">3d</span></div></td>
+            <td><span class="s-ready">Ready</span></td>
+            <td><span class="s-pending">mohanraj-r commented, no approval</span></td>
+          </tr>
+          <tr>
+            <td><a class="pr-link" href="https://github.com/forcedotcom/salesforcedx-vscode-einstein-gpt/pull/2178" target="_blank">#2178</a></td>
+            <td>mohanraj-r</td><td class="num">4,711</td>
+            <td><div class="age-bar-wrap"><div class="age-bar age-ok" style="width:4px"></div><span class="age-label">1d</span></div></td>
+            <td><span class="s-ready">Ready</span></td>
+            <td><span class="s-approved">mingxuanzhangsfdx approved ✓</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- main open -->
+  <div class="card">
+    <div class="sub-label">salesforcedx-vscode-einstein-gpt &mdash; main (AFV engineers)</div>
+    <div class="card-inner">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>PR</th>
+            <th>Author</th>
+            <th>Size (lines)</th>
+            <th>Age</th>
+            <th>Status</th>
+            <th>Review status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a class="pr-link" href="https://github.com/forcedotcom/salesforcedx-vscode-einstein-gpt/pull/2042" target="_blank">#2042</a></td>
+            <td>mohanraj-r</td><td class="num">22</td>
+            <td><div class="age-bar-wrap"><div class="age-bar age-crit" style="width:80px"></div><span class="age-label highlight">40d</span></div></td>
+            <td><span class="s-draft">Draft</span></td>
+            <td><span class="muted">No reviews</span></td>
+          </tr>
+          <tr>
+            <td><a class="pr-link" href="https://github.com/forcedotcom/salesforcedx-vscode-einstein-gpt/pull/2081" target="_blank">#2081</a></td>
+            <td>mohanraj-r</td><td class="num">1,165</td>
+            <td><div class="age-bar-wrap"><div class="age-bar age-crit" style="width:80px"></div><span class="age-label highlight">32d</span></div></td>
+            <td><span class="s-ready">Ready</span></td>
+            <td><span class="s-pending">1 comment, no approval</span></td>
+          </tr>
+          <tr>
+            <td><a class="pr-link" href="https://github.com/forcedotcom/salesforcedx-vscode-einstein-gpt/pull/2097" target="_blank">#2097</a></td>
+            <td>mohanraj-r</td><td class="num">862</td>
+            <td><div class="age-bar-wrap"><div class="age-bar age-crit" style="width:80px"></div><span class="age-label highlight">30d</span></div></td>
+            <td><span class="s-ready">Ready</span></td>
+            <td><span class="muted">No reviews</span></td>
+          </tr>
+          <tr>
+            <td><a class="pr-link" href="https://github.com/forcedotcom/salesforcedx-vscode-einstein-gpt/pull/2118" target="_blank">#2118</a></td>
+            <td>CristiCanizales</td><td class="num">9</td>
+            <td><div class="age-bar-wrap"><div class="age-bar age-crit" style="width:72px"></div><span class="age-label highlight">18d</span></div></td>
+            <td><span class="s-ready">Ready</span></td>
+            <td><span class="muted">No reviews</span></td>
+          </tr>
+          <tr>
+            <td><a class="pr-link" href="https://github.com/forcedotcom/salesforcedx-vscode-einstein-gpt/pull/2122" target="_blank">#2122</a></td>
+            <td>klewis-sfdc</td><td class="num">364</td>
+            <td><div class="age-bar-wrap"><div class="age-bar age-crit" style="width:44px"></div><span class="age-label">11d</span></div></td>
+            <td><span class="s-draft">Draft</span></td>
+            <td><span class="muted">No reviews</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- agentic-dx open -->
+  <div class="card">
+    <div class="sub-label">agentic-dx (AFV engineers)</div>
+    <div class="card-inner">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>PR</th>
+            <th>Author</th>
+            <th>Size (lines)</th>
+            <th>Age</th>
+            <th>Status</th>
+            <th>Review status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a class="pr-link" href="https://github.com/forcedotcom/agentic-dx/pull/335" target="_blank">#335</a></td>
+            <td>lahernandezb</td><td class="num highlight">5,812</td>
+            <td><div class="age-bar-wrap"><div class="age-bar age-warn" style="width:20px"></div><span class="age-label">5d</span></div></td>
+            <td><span class="s-ready">Ready</span></td>
+            <td><span class="s-changes">2× CHANGES_REQUESTED, round 3 in progress</span></td>
+          </tr>
+          <tr>
+            <td><a class="pr-link" href="https://github.com/forcedotcom/agentic-dx/pull/336" target="_blank">#336</a></td>
+            <td>klewis-sfdc</td><td class="num">1,060</td>
+            <td><div class="age-bar-wrap"><div class="age-bar age-warn" style="width:20px"></div><span class="age-label">5d</span></div></td>
+            <td><span class="s-draft">Draft</span></td>
+            <td><span class="s-pending">jgellin-sf + mohanraj-r commented, no approval</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PART 3 — REVIEW ACTIVITY
+═══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-heading">Part 3 — Review Activity by AFV Engineer</div>
+
+  <!-- afv-v4.0 reviews -->
+  <div class="card">
+    <div class="sub-label">salesforcedx-vscode-einstein-gpt &mdash; afv-v4.0 &nbsp;·&nbsp; Avg review rounds: 1.06</div>
+    <div class="card-inner">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Reviewer</th>
+            <th>PRs reviewed</th>
+            <th>Approvals given</th>
+            <th>Changes requested</th>
+            <th>Approval rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="eng"><img src="https://github.com/jgellin-sf.png" onerror="this.style.display='none'"><span class="eng-name">jgellin-sf</span></span></td><td class="num">14</td><td class="num">12</td><td class="num">1</td><td><div class="rate-wrap"><div class="rate-bar-track"><div class="rate-bar-fill" style="width:86%"></div></div><span class="rate-label good">86%</span></div></td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/mohanraj-r.png" onerror="this.style.display='none'"><span class="eng-name">mohanraj-r</span></span></td><td class="num">12</td><td class="num">5</td><td class="num">0</td><td><div class="rate-wrap"><div class="rate-bar-track"><div class="rate-bar-fill" style="width:42%; background:#d29922"></div></div><span class="rate-label highlight">42%</span></div></td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/mingxuanzhangsfdx.png" onerror="this.style.display='none'"><span class="eng-name">mingxuanzhangsfdx</span></span></td><td class="num">8</td><td class="num">6</td><td class="num">0</td><td><div class="rate-wrap"><div class="rate-bar-track"><div class="rate-bar-fill" style="width:75%"></div></div><span class="rate-label">75%</span></div></td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/klewis-sfdc.png" onerror="this.style.display='none'"><span class="eng-name">klewis-sfdc</span></span></td><td class="num">6</td><td class="num">4</td><td class="num">0</td><td><div class="rate-wrap"><div class="rate-bar-track"><div class="rate-bar-fill" style="width:67%"></div></div><span class="rate-label">67%</span></div></td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/CristiCanizales.png" onerror="this.style.display='none'"><span class="eng-name">CristiCanizales</span></span></td><td class="num">3</td><td class="num">2</td><td class="num">1</td><td><div class="rate-wrap"><div class="rate-bar-track"><div class="rate-bar-fill" style="width:67%"></div></div><span class="rate-label">67%</span></div></td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/lahernandezb.png" onerror="this.style.display='none'"><span class="eng-name">lahernandezb</span></span></td><td class="num">2</td><td class="num">2</td><td class="num">0</td><td><div class="rate-wrap"><div class="rate-bar-track"><div class="rate-bar-fill" style="width:100%"></div></div><span class="rate-label good">100%</span></div></td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/mgutin.png" onerror="this.style.display='none'"><span class="eng-name">mgutin</span></span></td><td class="num">2</td><td class="num">1</td><td class="num">0</td><td><div class="rate-wrap"><div class="rate-bar-track"><div class="rate-bar-fill" style="width:50%; background:#d29922"></div></div><span class="rate-label">50%</span></div></td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/jasminejin-sfdc.png" onerror="this.style.display='none'"><span class="eng-name">jasminejin-sfdc</span></span></td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td><div class="rate-wrap"><div class="rate-bar-track"><div class="rate-bar-fill" style="width:100%"></div></div><span class="rate-label good">100%</span></div></td></tr>
+          <tr class="total-row"><td>Total</td><td class="num">48</td><td class="num">33</td><td class="num">2</td><td class="muted">69% overall</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- main reviews -->
+  <div class="card">
+    <div class="sub-label">salesforcedx-vscode-einstein-gpt &mdash; main &nbsp;·&nbsp; Avg review rounds: 1.0</div>
+    <div class="card-inner">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Reviewer</th>
+            <th>PRs reviewed</th>
+            <th>Approvals given</th>
+            <th>Changes requested</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="eng"><img src="https://github.com/jgellin-sf.png" onerror="this.style.display='none'"><span class="eng-name">jgellin-sf</span></span></td><td class="num">2</td><td class="num">2</td><td class="num">0</td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/klewis-sfdc.png" onerror="this.style.display='none'"><span class="eng-name">klewis-sfdc</span></span></td><td class="num">2</td><td class="num">1</td><td class="num">0</td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/lahernandezb.png" onerror="this.style.display='none'"><span class="eng-name">lahernandezb</span></span></td><td class="num">1</td><td class="num">1</td><td class="num">0</td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/mgutin.png" onerror="this.style.display='none'"><span class="eng-name">mgutin</span></span></td><td class="num">1</td><td class="num">1</td><td class="num">0</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- agentic-dx reviews -->
+  <div class="card">
+    <div class="sub-label">agentic-dx (AFV engineer review activity on open PRs) &nbsp;·&nbsp; Avg review rounds (merged): 1.33</div>
+    <div class="card-inner">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Reviewer</th>
+            <th>Open PRs engaged</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="eng"><img src="https://github.com/mohanraj-r.png" onerror="this.style.display='none'"><span class="eng-name">mohanraj-r</span></span></td><td>#335, #336</td><td class="muted">Comments only, no approvals</td></tr>
+          <tr><td><span class="eng"><img src="https://github.com/jgellin-sf.png" onerror="this.style.display='none'"><span class="eng-name">jgellin-sf</span></span></td><td>#336</td><td class="muted">Comments only</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div style="max-width:1080px; margin: 0 auto; font-size:12px; color:#484f58; padding-top:8px;">
+  Generated May 18, 2026 &nbsp;·&nbsp; <a href="index.html">← Back to Epic Tracker</a>
+</div>
+
+</body>
+</html>
