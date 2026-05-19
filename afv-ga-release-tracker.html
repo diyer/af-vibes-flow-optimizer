@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AFV Vibes GA Release — Work Item Tracker</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3350;
+      --text: #e2e8f0;
+      --muted: #8892b0;
+      --red: #ff4d6d;
+      --red-bg: #2d1520;
+      --yellow: #ffd166;
+      --yellow-bg: #2a2210;
+      --green: #06d6a0;
+      --green-bg: #0d2420;
+      --blue: #4cc9f0;
+      --blue-bg: #0d1f2d;
+      --purple: #a78bfa;
+      --purple-bg: #1a1530;
+      --orange: #f4a261;
+      --orange-bg: #2a1a0a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 32px 24px;
+    }
+
+    header {
+      margin-bottom: 32px;
+    }
+
+    header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      color: var(--text);
+    }
+
+    header p {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    header a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    /* Summary bar */
+    .summary-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 22px;
+      min-width: 140px;
+    }
+
+    .stat-card .label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .stat-card .value {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .stat-card .sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .value.green { color: var(--green); }
+    .value.yellow { color: var(--yellow); }
+    .value.blue { color: var(--blue); }
+    .value.purple { color: var(--purple); }
+    .value.red { color: var(--red); }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .legend-label {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-right: 4px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .badge-completed { background: var(--green-bg); color: var(--green); }
+    .badge-in-progress { background: var(--yellow-bg); color: var(--yellow); }
+    .badge-not-started { background: var(--surface2); color: var(--muted); }
+    .badge-review { background: var(--blue-bg); color: var(--blue); }
+    .badge-triaged { background: var(--purple-bg); color: var(--purple); }
+
+    /* Parent work item cards */
+    .parent-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .parent-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .parent-card.status-completed { border-left: 3px solid var(--green); }
+    .parent-card.status-in-progress { border-left: 3px solid var(--yellow); }
+    .parent-card.status-not-started { border-left: 3px solid var(--border); }
+    .parent-card.status-triaged { border-left: 3px solid var(--purple); }
+
+    .parent-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .parent-header:hover {
+      background: var(--surface2);
+    }
+
+    .parent-id {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      min-width: 90px;
+    }
+
+    .parent-id a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .parent-id a:hover { color: var(--blue); }
+
+    .parent-subject {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .parent-assignee {
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3px 10px;
+      white-space: nowrap;
+    }
+
+    .parent-assignee::before {
+      content: "👤 ";
+      font-size: 10px;
+    }
+
+    .parent-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .progress-pill {
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--surface2);
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .progress-bar-wrap {
+      width: 80px;
+      height: 6px;
+      background: var(--surface2);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    .fill-green { background: var(--green); }
+    .fill-yellow { background: var(--yellow); }
+    .fill-blue { background: var(--blue); }
+    .fill-muted { background: var(--muted); }
+
+    .chevron {
+      font-size: 12px;
+      color: var(--muted);
+      transition: transform 0.2s ease;
+      min-width: 14px;
+    }
+
+    .parent-card.open .chevron {
+      transform: rotate(90deg);
+    }
+
+    /* Child table */
+    .child-table {
+      display: none;
+      border-top: 1px solid var(--border);
+    }
+
+    .parent-card.open .child-table {
+      display: block;
+    }
+
+    .child-table table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .child-table th {
+      text-align: left;
+      padding: 8px 14px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--muted);
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .child-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .child-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .child-table tr:hover td {
+      background: var(--surface2);
+    }
+
+    .work-id {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .work-id a { color: var(--muted); text-decoration: none; }
+    .work-id a:hover { color: var(--blue); }
+
+    .subject-cell {
+      color: var(--text);
+      max-width: 420px;
+    }
+
+    .assignee-cell {
+      color: var(--muted);
+      white-space: nowrap;
+      font-size: 11px;
+    }
+
+    .pts-cell {
+      color: var(--muted);
+      text-align: center;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .no-children {
+      padding: 16px 20px;
+      font-size: 12px;
+      color: var(--muted);
+      font-style: italic;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Status dots */
+    .dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    .dot-green { background: var(--green); }
+    .dot-yellow { background: var(--yellow); }
+    .dot-muted { background: var(--muted); }
+    .dot-blue { background: var(--blue); }
+    .dot-purple { background: var(--purple); }
+
+    footer {
+      margin-top: 48px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>AFV Vibes GA Release — Work Item Tracker</h1>
+  <p>Epic: <a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a3QEE000002LVE92AO/view" target="_blank">[AFV][264] AFV Vibes 2.0</a>
+    &nbsp;·&nbsp;
+    <a href="https://gus.lightning.force.com/lightning/r/Report/00OEE0000036mwH2AQ/view?queryScope=userFolders" target="_blank">View Source Report in GUS ↗</a>
+    &nbsp;·&nbsp;
+    Generated 2026-05-19
+  </p>
+</header>
+
+<div class="summary-bar">
+  <div class="stat-card">
+    <div class="label">Parent Work Items</div>
+    <div class="value blue">11</div>
+    <div class="sub">across AFV Vibes 2.0</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Completed</div>
+    <div class="value green">1</div>
+    <div class="sub">all children closed</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">In Progress</div>
+    <div class="value yellow">5</div>
+    <div class="sub">partially done</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Not Started</div>
+    <div class="value" style="color:var(--muted)">5</div>
+    <div class="sub">no children started</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Child Items</div>
+    <div class="value purple">36</div>
+    <div class="sub">total tracked</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Story Points Done</div>
+    <div class="value green">17</div>
+    <div class="sub">of ~88 total</div>
+  </div>
+</div>
+
+<div class="legend">
+  <span class="legend-label">Status:</span>
+  <span class="badge badge-completed"><span class="dot dot-green"></span>Completed</span>
+  <span class="badge badge-in-progress"><span class="dot dot-yellow"></span>In Progress</span>
+  <span class="badge badge-not-started"><span class="dot dot-muted"></span>Not Started</span>
+  <span class="badge badge-review"><span class="dot dot-blue"></span>Ready for Review</span>
+  <span class="badge badge-triaged"><span class="dot dot-purple"></span>Triaged</span>
+</div>
+
+<div class="parent-grid">
+
+  <!-- W-22497195: Talk to an AI agent — IN PROGRESS -->
+  <div class="parent-card status-in-progress open" onclick="toggle(this)">
+    <div class="parent-header">
+      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a3FKBYA2/view" target="_blank" onclick="event.stopPropagation()">W-22497195</a></div>
+      <div class="parent-subject">Parent WI: Talk to an AI agent in the sidebar — Multi turn chat with tool calls</div>
+      <div class="parent-assignee">Cristina Cañizales</div>
+      <div class="parent-meta">
+        <div class="progress-bar-wrap"><div class="progress-bar-fill fill-yellow" style="width:67%"></div></div>
+        <div class="progress-pill">4 / 6 done</div>
+        <span class="badge badge-in-progress"><span class="dot dot-yellow"></span>In Progress</span>
+      </div>
+      <div class="chevron">▶</div>
+    </div>
+    <div class="child-table">
+      <table>
+        <thead>
+          <tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZkisSYAR/view" target="_blank">W-22430524</a></td>
+            <td class="subject-cell">UX:Chat - Render tool calls and agent reasoning</td>
+            <td class="assignee-cell">Cristina Cañizales</td>
+            <td class="pts-cell">3</td>
+            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZktcTYAR/view" target="_blank">W-22430519</a></td>
+            <td class="subject-cell">UX:Chat - Basic back-and-forth conversation</td>
+            <td class="assignee-cell">Cristina Cañizales</td>
+            <td class="pts-cell">3</td>
+            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZxRv7YAF/view" target="_blank">W-22478314</a></td>
+            <td class="subject-cell">Chat Management</td>
+            <td class="assignee-cell">Jonathan Gellin</td>
+            <td class="pts-cell">3</td>
+            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZkfJiYAJ/view" target="_blank">W-22430535</a></td>
+            <td class="subject-cell">UX:Chat - Search and export conversations</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">3</td>
+            <td><span class="badge badge-in-progress"><span class="dot dot-yellow"></span>In Progress</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZktmDYAR/view" target="_blank">W-22430547</a></td>
+            <td class="subject-cell">UX:Chat: Implement diff view in Chat</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">3</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZktgHYAR/view" target="_blank">W-22430542</a></td>
+            <td class="subject-cell">UX:Chat - Multiple conversations via tabs</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">3</td>
+            <td><span class="badge badge-in-progress"><span class="dot dot-yellow"></span>In Progress</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- W-22497295: Planner — IN PROGRESS -->
+  <div class="parent-card status-in-progress" onclick="toggle(this)">
+    <div class="parent-header">
+      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a37PaYAI/view" target="_blank" onclick="event.stopPropagation()">W-22497295</a></div>
+      <div class="parent-subject">Parent WI: Planner</div>
+      <div class="parent-assignee">Mingxuan Zhang</div>
+      <div class="parent-meta">
+        <div class="progress-bar-wrap"><div class="progress-bar-fill fill-yellow" style="width:25%"></div></div>
+        <div class="progress-pill">3 / 12 done</div>
+        <span class="badge badge-in-progress"><span class="dot dot-yellow"></span>In Progress</span>
+      </div>
+      <div class="chevron">▶</div>
+    </div>
+    <div class="child-table">
+      <table>
+        <thead>
+          <tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwtLfYAJ/view" target="_blank">W-22475771</a></td>
+            <td class="subject-cell">AFV v4 Plan Mode: Add Plan, ExecutionState, PlanNudgeSuggestion, Plan/Act glossary entries</td>
+            <td class="assignee-cell">Mingxuan Zhang</td>
+            <td class="pts-cell">1</td>
+            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwQ4JYAV/view" target="_blank">W-22475754</a></td>
+            <td class="subject-cell">AFV v4 Plan Mode: Hydrate plan-mode caches from persisted ChatMessages on webview reload</td>
+            <td class="assignee-cell">Mingxuan Zhang</td>
+            <td class="pts-cell">1</td>
+            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwRHiYAN/view" target="_blank">W-22475825</a></td>
+            <td class="subject-cell">AFV v4 Plan Mode: Emit plan:nudge (switch-to-act) for trivial prompts in plan mode</td>
+            <td class="assignee-cell">Mingxuan Zhang</td>
+            <td class="pts-cell">2</td>
+            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a4DARYAZ/view" target="_blank">W-22478655</a></td>
+            <td class="subject-cell">AFV v4 Plan Mode: Tab bar shell (Chat / Plans / Toolkit) in webview</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">2</td>
+            <td><span class="badge badge-review"><span class="dot dot-blue"></span>Ready for Review</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a4DKRYAZ/view" target="_blank">W-22478658</a></td>
+            <td class="subject-cell">AFV v4 Plan Mode: ChatWelcome empty state with Chat / Plan switching</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">2</td>
+            <td><span class="badge badge-review"><span class="dot dot-blue"></span>Ready for Review</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a4DSBYAZ/view" target="_blank">W-22478663</a></td>
+            <td class="subject-cell">AFV v4 Plan Mode: Plans tab renders PlanList of approved plans</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">3</td>
+            <td><span class="badge badge-review"><span class="dot dot-blue"></span>Ready for Review</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a4DhBYAU/view" target="_blank">W-22478671</a></td>
+            <td class="subject-cell">AFV v4 Plan Mode: Open approved plan in a separate task board</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">5</td>
+            <td><span class="badge badge-review"><span class="dot dot-blue"></span>Ready for Review</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwvDfYAJ/view" target="_blank">W-22475843</a></td>
+            <td class="subject-cell">AFV v4 Plan Mode: Replace fixture plan with LLM-backed generation via FeatureContext.invokeAgent</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">8</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwvSYYAZ/view" target="_blank">W-22475837</a></td>
+            <td class="subject-cell">AFV v4 Plan Mode: Decide and implement ChatSession reuse policy</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">2</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Zww0BYAZ/view" target="_blank">W-22475846</a></td>
+            <td class="subject-cell">AFV v4 Plan Mode: Drive execution:update from real runtime events</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">5</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwwJoYAJ/view" target="_blank">W-22475855</a></td>
+            <td class="subject-cell">AFV v4 Plan Mode: Migrate plan generation from free-text JSON to structured tool calls</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">5</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwwXyYAJ/view" target="_blank">W-22475861</a></td>
+            <td class="subject-cell">AFV v4 Plan Mode: Record and replay end-to-end plan-mode traces</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">3</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- W-22497198: Agent SDK Integration — IN PROGRESS -->
+  <div class="parent-card status-in-progress" onclick="toggle(this)">
+    <div class="parent-header">
+      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a3TURYA2/view" target="_blank" onclick="event.stopPropagation()">W-22497198</a></div>
+      <div class="parent-subject">Parent WI: Agent SDK Integration with Claude and Mastra</div>
+      <div class="parent-assignee">Luis Hernandez</div>
+      <div class="parent-meta">
+        <div class="progress-bar-wrap"><div class="progress-bar-fill fill-yellow" style="width:40%"></div></div>
+        <div class="progress-pill">2 / 5 done</div>
+        <span class="badge badge-in-progress"><span class="dot dot-yellow"></span>In Progress</span>
+      </div>
+      <div class="chevron">▶</div>
+    </div>
+    <div class="child-table">
+      <table>
+        <thead>
+          <tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZdUqfYAF/view" target="_blank">W-22416871</a></td>
+            <td class="subject-cell">Create new claude agent sdk package in agentic-dx</td>
+            <td class="assignee-cell">Luis Hernandez</td>
+            <td class="pts-cell">3</td>
+            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vJGYAI/view" target="_blank">W-22554527</a></td>
+            <td class="subject-cell">Publish Claude Harness Package to NPM</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">2</td>
+            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6yrQYAI/view" target="_blank">W-22546063</a></td>
+            <td class="subject-cell">Consume @salesforce/sfdx-agent-harness-claude in Agentforce Vibes</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">2</td>
+            <td><span class="badge badge-in-progress"><span class="dot dot-yellow"></span>In Progress</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6yrRYAI/view" target="_blank">W-22546119</a></td>
+            <td class="subject-cell">Skills Path Passthrough (not present in options builder)</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">—</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vJHYAI/view" target="_blank">W-22511383</a></td>
+            <td class="subject-cell">Tool Approval Gating</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">2</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- W-22497279: Add monetization support — TRIAGED (partial start) -->
+  <div class="parent-card status-triaged" onclick="toggle(this)">
+    <div class="parent-header">
+      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a3Ij6YAE/view" target="_blank" onclick="event.stopPropagation()">W-22497279</a></div>
+      <div class="parent-subject">Parent WI: Add monetization support</div>
+      <div class="parent-assignee">Jasmine Jin</div>
+      <div class="parent-meta">
+        <div class="progress-bar-wrap"><div class="progress-bar-fill fill-muted" style="width:0%"></div></div>
+        <div class="progress-pill">0 / 0 children</div>
+        <span class="badge badge-triaged"><span class="dot dot-purple"></span>Triaged</span>
+      </div>
+      <div class="chevron">▶</div>
+    </div>
+    <div class="child-table">
+      <div class="no-children">No child work items found in GUS. This parent is Triaged — child items may not yet be created.</div>
+    </div>
+  </div>
+
+  <!-- W-22497283: Port existing features — NOT STARTED -->
+  <div class="parent-card status-not-started" onclick="toggle(this)">
+    <div class="parent-header">
+      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a3JDuYAM/view" target="_blank" onclick="event.stopPropagation()">W-22497283</a></div>
+      <div class="parent-subject">Parent WI: Port existing features</div>
+      <div class="parent-assignee">Platform Dev Tools</div>
+      <div class="parent-meta">
+        <div class="progress-bar-wrap"><div class="progress-bar-fill fill-muted" style="width:0%"></div></div>
+        <div class="progress-pill">0 / 0 children</div>
+        <span class="badge badge-not-started"><span class="dot dot-muted"></span>Not Started</span>
+      </div>
+      <div class="chevron">▶</div>
+    </div>
+    <div class="child-table">
+      <div class="no-children">No child work items linked in GUS yet.</div>
+    </div>
+  </div>
+
+  <!-- W-22497206: Support for Tools, MCP & Skills — NOT STARTED -->
+  <div class="parent-card status-not-started" onclick="toggle(this)">
+    <div class="parent-header">
+      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a3PUOYA2/view" target="_blank" onclick="event.stopPropagation()">W-22497206</a></div>
+      <div class="parent-subject">Parent WI: Support for Tools, MCP &amp; Skills</div>
+      <div class="parent-assignee">Mohan Raj Rajamanickam</div>
+      <div class="parent-meta">
+        <div class="progress-bar-wrap"><div class="progress-bar-fill fill-muted" style="width:0%"></div></div>
+        <div class="progress-pill">0 / 4 done</div>
+        <span class="badge badge-not-started"><span class="dot dot-muted"></span>Not Started</span>
+      </div>
+      <div class="chevron">▶</div>
+    </div>
+    <div class="child-table">
+      <table>
+        <thead>
+          <tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycqt0YAF/view" target="_blank">W-22174365</a></td>
+            <td class="subject-cell">Week 2: Implement MCP infrastructure with stdio DX server</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">—</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycqw3YAF/view" target="_blank">W-22174366</a></td>
+            <td class="subject-cell">Week 3: Implement platform-hosted MCP servers with JWT auth</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">—</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002YcqzJYAR/view" target="_blank">W-22174367</a></td>
+            <td class="subject-cell">Week 3: Implement skills discovery, toggle, and use_skill tool call</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">—</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a1g8mYAA/view" target="_blank">W-22437953</a></td>
+            <td class="subject-cell">Week 4: Implement afv-library skills update</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">—</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- W-22497285: Telemetry and logging — NOT STARTED -->
+  <div class="parent-card status-not-started" onclick="toggle(this)">
+    <div class="parent-header">
+      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a3XmbYAE/view" target="_blank" onclick="event.stopPropagation()">W-22497285</a></div>
+      <div class="parent-subject">Parent WI: Telemetry and logging</div>
+      <div class="parent-assignee">Platform Dev Tools</div>
+      <div class="parent-meta">
+        <div class="progress-bar-wrap"><div class="progress-bar-fill fill-muted" style="width:0%"></div></div>
+        <div class="progress-pill">0 / 1 done</div>
+        <span class="badge badge-not-started"><span class="dot dot-muted"></span>Not Started</span>
+      </div>
+      <div class="chevron">▶</div>
+    </div>
+    <div class="child-table">
+      <table>
+        <thead>
+          <tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vLTYAI/view" target="_blank">W-22550973</a></td>
+            <td class="subject-cell">Ensure User-Agent for all providers includes the phrase 'agentforce-vibes'</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">—</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- W-22497229: Permissions — NOT STARTED -->
+  <div class="parent-card status-not-started" onclick="toggle(this)">
+    <div class="parent-header">
+      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a3a1BYAQ/view" target="_blank" onclick="event.stopPropagation()">W-22497229</a></div>
+      <div class="parent-subject">Parent WI: Permissions</div>
+      <div class="parent-assignee">Kenneth Lewis</div>
+      <div class="parent-meta">
+        <div class="progress-bar-wrap"><div class="progress-bar-fill fill-muted" style="width:0%"></div></div>
+        <div class="progress-pill">0 / 0 children</div>
+        <span class="badge badge-not-started"><span class="dot dot-muted"></span>Not Started</span>
+      </div>
+      <div class="chevron">▶</div>
+    </div>
+    <div class="child-table">
+      <div class="no-children">No child work items linked in GUS yet.</div>
+    </div>
+  </div>
+
+  <!-- W-22497196: End to end testing — COMPLETED -->
+  <div class="parent-card status-completed" onclick="toggle(this)">
+    <div class="parent-header">
+      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a3HJxYAM/view" target="_blank" onclick="event.stopPropagation()">W-22497196</a></div>
+      <div class="parent-subject">Parent WI: End to end testing</div>
+      <div class="parent-assignee">Platform Dev Tools</div>
+      <div class="parent-meta">
+        <div class="progress-bar-wrap"><div class="progress-bar-fill fill-green" style="width:100%"></div></div>
+        <div class="progress-pill">Completed</div>
+        <span class="badge badge-completed"><span class="dot dot-green"></span>Completed</span>
+      </div>
+      <div class="chevron">▶</div>
+    </div>
+    <div class="child-table">
+      <table>
+        <thead>
+          <tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycg2TYAR/view" target="_blank">W-22174349</a></td>
+            <td class="subject-cell">Implement trace-based replay for E2E testing and eval</td>
+            <td class="assignee-cell">Mohan Raj Rajamanickam</td>
+            <td class="pts-cell">3</td>
+            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- W-22511168: BYOK internal customers — NOT STARTED -->
+  <div class="parent-card status-not-started" onclick="toggle(this)">
+    <div class="parent-header">
+      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6rQUYAY/view" target="_blank" onclick="event.stopPropagation()">W-22511168</a></div>
+      <div class="parent-subject">Parent WI: BYOK internal customers</div>
+      <div class="parent-assignee">Jonathan Gellin</div>
+      <div class="parent-meta">
+        <div class="progress-bar-wrap"><div class="progress-bar-fill fill-muted" style="width:0%"></div></div>
+        <div class="progress-pill">0 / 4 done</div>
+        <span class="badge badge-not-started"><span class="dot dot-muted"></span>Not Started</span>
+      </div>
+      <div class="chevron">▶</div>
+    </div>
+    <div class="child-table">
+      <table>
+        <thead>
+          <tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vR5YAI/view" target="_blank">W-22548469</a></td>
+            <td class="subject-cell">Claude SDK will result in LLMG Express rate limiting</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">—</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vR6YAI/view" target="_blank">W-22548951</a></td>
+            <td class="subject-cell">BYOK Feature Flag, Key, and Endpoint Settings</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">2</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vR7YAI/view" target="_blank">W-22549139</a></td>
+            <td class="subject-cell">LLM Express AI Provider UI</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">—</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vR8YAI/view" target="_blank">W-22549188</a></td>
+            <td class="subject-cell">LLM Express-configured agents route LLM Calls to LLM Express</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">—</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- W-22516057: Abilities and Context management — NOT STARTED -->
+  <div class="parent-card status-not-started" onclick="toggle(this)">
+    <div class="parent-header">
+      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a87t7YAA/view" target="_blank" onclick="event.stopPropagation()">W-22516057</a></div>
+      <div class="parent-subject">Parent WI: Abilities and Context management</div>
+      <div class="parent-assignee">Platform Dev Tools</div>
+      <div class="parent-meta">
+        <div class="progress-bar-wrap"><div class="progress-bar-fill fill-muted" style="width:0%"></div></div>
+        <div class="progress-pill">0 / 4 done</div>
+        <span class="badge badge-not-started"><span class="dot dot-muted"></span>Not Started</span>
+      </div>
+      <div class="chevron">▶</div>
+    </div>
+    <div class="child-table">
+      <table>
+        <thead>
+          <tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycs5KYAR/view" target="_blank">W-22174396</a></td>
+            <td class="subject-cell">Week 5: Implement slash commands for mode switching and customization</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">—</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycs5LYAR/view" target="_blank">W-22174392</a></td>
+            <td class="subject-cell">Week 5: Implement SDK-level context management and compaction</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">—</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycs5MYAR/view" target="_blank">W-22174393</a></td>
+            <td class="subject-cell">Week 5: Implement @-mention and SObject context injection</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">—</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002YcqttYAF/view" target="_blank">W-22174368</a></td>
+            <td class="subject-cell">Week 3: Implement abilities/RAG for DX MCP server tool selection</td>
+            <td class="assignee-cell">—</td>
+            <td class="pts-cell">—</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Data pulled from GUS · Epic <a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a3QEE000002LVE92AO/view" style="color:var(--blue)" target="_blank">[AFV][264] AFV Vibes 2.0</a> · Agentforce Vibes Team · 2026-05-19
+</footer>
+
+<script>
+  function toggle(card) {
+    card.classList.toggle('open');
+  }
+</script>
+
+</body>
+</html>
