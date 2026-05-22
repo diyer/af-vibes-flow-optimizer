@@ -23,36 +23,20 @@
       --orange: #f4a261;
       --orange-bg: #2a1a0a;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 32px 24px;
-    }
-
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 32px 24px; }
     header { margin-bottom: 32px; }
     header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
     header p { margin-top: 6px; font-size: 13px; color: var(--muted); }
     header a { color: var(--blue); text-decoration: none; }
-
     .summary-bar { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
     .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 22px; min-width: 140px; }
     .stat-card .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); margin-bottom: 6px; }
     .stat-card .value { font-size: 28px; font-weight: 700; line-height: 1; }
     .stat-card .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
-    .v-green  { color: var(--green); }
-    .v-yellow { color: var(--yellow); }
-    .v-blue   { color: var(--blue); }
-    .v-purple { color: var(--purple); }
-    .v-muted  { color: var(--muted); }
-
+    .v-green { color: var(--green); } .v-yellow { color: var(--yellow); } .v-blue { color: var(--blue); } .v-purple { color: var(--purple); } .v-muted { color: var(--muted); }
     .legend { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; align-items: center; }
     .legend-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-
     .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
     .b-completed   { background: var(--green-bg);  color: var(--green); }
     .b-in-progress { background: var(--yellow-bg); color: var(--yellow); }
@@ -60,64 +44,43 @@
     .b-review      { background: var(--blue-bg);   color: var(--blue); }
     .b-triaged     { background: var(--purple-bg); color: var(--purple); }
     .b-qa          { background: var(--orange-bg); color: var(--orange); }
-
     .parent-grid { display: flex; flex-direction: column; gap: 16px; }
-
     .parent-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
     .parent-card.s-completed   { border-left: 3px solid var(--green); }
     .parent-card.s-in-progress { border-left: 3px solid var(--yellow); }
     .parent-card.s-not-started { border-left: 3px solid var(--border); }
     .parent-card.s-triaged     { border-left: 3px solid var(--purple); }
-
     .parent-header { display: flex; align-items: center; gap: 14px; padding: 16px 20px; cursor: pointer; user-select: none; }
     .parent-header:hover { background: var(--surface2); }
-
     .parent-id { font-size: 11px; font-weight: 700; color: var(--muted); font-family: 'SF Mono', 'Fira Code', monospace; min-width: 90px; }
     .parent-id a { color: var(--muted); text-decoration: none; }
     .parent-id a:hover { color: var(--blue); }
-
     .parent-subject { flex: 1; font-size: 14px; font-weight: 600; color: var(--text); }
-
     .parent-assignee { font-size: 11px; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; white-space: nowrap; }
     .parent-assignee::before { content: "👤 "; font-size: 10px; }
-
     .parent-meta { display: flex; align-items: center; gap: 10px; }
     .progress-pill { font-size: 11px; color: var(--muted); background: var(--surface2); padding: 3px 10px; border-radius: 20px; }
     .bar-wrap { width: 80px; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
     .bar-fill { height: 100%; border-radius: 3px; }
-    .fill-green  { background: var(--green); }
-    .fill-yellow { background: var(--yellow); }
-    .fill-muted  { background: var(--muted); }
-
+    .fill-green { background: var(--green); } .fill-yellow { background: var(--yellow); } .fill-muted { background: var(--muted); }
     .chevron { font-size: 12px; color: var(--muted); transition: transform 0.2s ease; min-width: 14px; }
     .parent-card.open .chevron { transform: rotate(90deg); }
-
     .child-table { display: none; border-top: 1px solid var(--border); }
     .parent-card.open .child-table { display: block; }
-
     .child-table table { width: 100%; border-collapse: collapse; font-size: 12px; }
     .child-table th { text-align: left; padding: 8px 14px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); background: var(--surface2); border-bottom: 1px solid var(--border); }
     .child-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
     .child-table tr:last-child td { border-bottom: none; }
     .child-table tr:hover td { background: var(--surface2); }
-
     .wid { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11px; color: var(--muted); white-space: nowrap; }
     .wid a { color: var(--muted); text-decoration: none; }
     .wid a:hover { color: var(--blue); }
     .subj { color: var(--text); max-width: 420px; }
     .asgn { color: var(--muted); white-space: nowrap; font-size: 11px; }
     .pts  { color: var(--muted); text-align: center; font-size: 11px; white-space: nowrap; }
-
     .no-children { padding: 16px 20px; font-size: 12px; color: var(--muted); font-style: italic; }
-
     .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; }
-    .dg { background: var(--green); }
-    .dy { background: var(--yellow); }
-    .dm { background: var(--muted); }
-    .db { background: var(--blue); }
-    .dp { background: var(--purple); }
-    .do { background: var(--orange); }
-
+    .dg { background: var(--green); } .dy { background: var(--yellow); } .dm { background: var(--muted); } .db { background: var(--blue); } .dp { background: var(--purple); } .do { background: var(--orange); }
     footer { margin-top: 48px; font-size: 11px; color: var(--muted); }
     footer a { color: var(--blue); }
   </style>
@@ -130,7 +93,7 @@
     &nbsp;·&nbsp;
     <a href="https://gus.lightning.force.com/lightning/r/Report/00OEE0000036mwH2AQ/view?queryScope=userFolders" target="_blank">View Source Report in GUS ↗</a>
     &nbsp;·&nbsp;
-    Updated 2026-05-21
+    Updated 2026-05-22
   </p>
 </header>
 
@@ -142,12 +105,12 @@
   </div>
   <div class="stat-card">
     <div class="label">Completed</div>
-    <div class="value v-green">1</div>
+    <div class="value v-green">0</div>
     <div class="sub">all children closed</div>
   </div>
   <div class="stat-card">
     <div class="label">In Progress</div>
-    <div class="value v-yellow">4</div>
+    <div class="value v-yellow">5</div>
     <div class="sub">partially done</div>
   </div>
   <div class="stat-card">
@@ -162,12 +125,12 @@
   </div>
   <div class="stat-card">
     <div class="label">Child Items</div>
-    <div class="value v-purple">46</div>
+    <div class="value v-purple">61</div>
     <div class="sub">total tracked</div>
   </div>
   <div class="stat-card">
     <div class="label">Points Done</div>
-    <div class="value v-green">33</div>
+    <div class="value v-green">36</div>
     <div class="sub">of ~98 estimated</div>
   </div>
 </div>
@@ -184,36 +147,8 @@
 
 <div class="parent-grid">
 
-  <!-- W-22497229 · Permissions · COMPLETED 1/1 -->
-  <div class="parent-card s-completed open" onclick="toggle(this)">
-    <div class="parent-header">
-      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a3a1BYAQ/view" target="_blank" onclick="event.stopPropagation()">W-22497229</a></div>
-      <div class="parent-subject">Parent WI: Permissions</div>
-      <div class="parent-assignee">Kenneth Lewis</div>
-      <div class="parent-meta">
-        <div class="bar-wrap"><div class="bar-fill fill-green" style="width:100%"></div></div>
-        <div class="progress-pill">1 / 1 done</div>
-        <span class="badge b-completed"><span class="dot dg"></span>Completed</span>
-      </div>
-      <div class="chevron">▶</div>
-    </div>
-    <div class="child-table">
-      <table>
-        <thead><tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8MA1YAM/view" target="_blank">W-22577323</a></td>
-            <td class="subj">Safe Commands Guard + User-Editable Command Allowlist</td>
-            <td class="asgn">Kenneth Lewis</td><td class="pts">—</td>
-            <td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
   <!-- W-22497295 · Planner · IN PROGRESS 7/12 -->
-  <div class="parent-card s-in-progress" onclick="toggle(this)">
+  <div class="parent-card s-in-progress open" onclick="toggle(this)">
     <div class="parent-header">
       <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a37PaYAI/view" target="_blank" onclick="event.stopPropagation()">W-22497295</a></div>
       <div class="parent-subject">Parent WI: Planner</div>
@@ -229,78 +164,46 @@
       <table>
         <thead><tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
         <tbody>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwQ4JYAV/view" target="_blank">W-22475754</a></td>
-            <td class="subj">AFV v4 Plan Mode: Hydrate plan-mode caches from persisted ChatMessages on webview reload</td>
-            <td class="asgn">Mingxuan Zhang</td><td class="pts">1</td>
-            <td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwtLfYAJ/view" target="_blank">W-22475771</a></td>
-            <td class="subj">AFV v4 Plan Mode: Add Plan, ExecutionState, PlanNudgeSuggestion, Plan/Act glossary entries</td>
-            <td class="asgn">Mingxuan Zhang</td><td class="pts">1</td>
-            <td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwRHiYAN/view" target="_blank">W-22475825</a></td>
-            <td class="subj">AFV v4 Plan Mode: Emit plan:nudge (switch-to-act) for trivial prompts in plan mode</td>
-            <td class="asgn">Mingxuan Zhang</td><td class="pts">2</td>
-            <td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a4DARYAZ/view" target="_blank">W-22478655</a></td>
-            <td class="subj">AFV v4 Plan Mode: Tab bar shell (Chat / Plans / Toolkit) in sidebar webview</td>
-            <td class="asgn">Mingxuan Zhang</td><td class="pts">2</td>
-            <td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a4DKRYAZ/view" target="_blank">W-22478658</a></td>
-            <td class="subj">AFV v4 Plan Mode: ChatWelcome empty state with Chat / Plan sample prompts</td>
-            <td class="asgn">Mingxuan Zhang</td><td class="pts">2</td>
-            <td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a4DSBYAZ/view" target="_blank">W-22478663</a></td>
-            <td class="subj">AFV v4 Plan Mode: Plans tab renders PlanList of approved plans from user</td>
-            <td class="asgn">Mingxuan Zhang</td><td class="pts">3</td>
-            <td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a4DhBYAU/view" target="_blank">W-22478671</a></td>
-            <td class="subj">AFV v4 Plan Mode: Open approved plan in a separate task board WebviewPanel</td>
-            <td class="asgn">Mingxuan Zhang</td><td class="pts">5</td>
-            <td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwvSYYAZ/view" target="_blank">W-22475837</a></td>
-            <td class="subj">AFV v4 Plan Mode: Decide and implement ChatSession reuse policy for plan mode</td>
-            <td class="asgn">Platform Dev Tools</td><td class="pts">2</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwvDfYAJ/view" target="_blank">W-22475843</a></td>
-            <td class="subj">AFV v4 Plan Mode: Replace fixture plan with LLM-backed generation via FeatureContext.invokeAgent</td>
-            <td class="asgn">Platform Dev Tools</td><td class="pts">8</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Zww0BYAZ/view" target="_blank">W-22475846</a></td>
-            <td class="subj">AFV v4 Plan Mode: Drive execution:update from real runtime events</td>
-            <td class="asgn">Platform Dev Tools</td><td class="pts">5</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwwJoYAJ/view" target="_blank">W-22475855</a></td>
-            <td class="subj">AFV v4 Plan Mode: Migrate plan generation from free-text JSON to SDK tool calls</td>
-            <td class="asgn">Platform Dev Tools</td><td class="pts">5</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwwXyYAJ/view" target="_blank">W-22475861</a></td>
-            <td class="subj">AFV v4 Plan Mode: Record and replay end-to-end plan-mode trace in @afv</td>
-            <td class="asgn">Platform Dev Tools</td><td class="pts">3</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwQ4JYAV/view" target="_blank">W-22475754</a></td><td class="subj">AFV v4 Plan Mode: Hydrate plan-mode caches from persisted ChatMessages on webview reload</td><td class="asgn">Mingxuan Zhang</td><td class="pts">1</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwtLfYAJ/view" target="_blank">W-22475771</a></td><td class="subj">AFV v4 Plan Mode: Add Plan, ExecutionState, PlanNudgeSuggestion, Plan/Act glossary entries</td><td class="asgn">Mingxuan Zhang</td><td class="pts">1</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwRHiYAN/view" target="_blank">W-22475825</a></td><td class="subj">AFV v4 Plan Mode: Emit plan:nudge (switch-to-act) for trivial prompts in plan mode</td><td class="asgn">Mingxuan Zhang</td><td class="pts">2</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a4DARYAZ/view" target="_blank">W-22478655</a></td><td class="subj">AFV v4 Plan Mode: Tab bar shell (Chat / Plans / Toolkit) in sidebar webview</td><td class="asgn">Mingxuan Zhang</td><td class="pts">2</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a4DKRYAZ/view" target="_blank">W-22478658</a></td><td class="subj">AFV v4 Plan Mode: ChatWelcome empty state with Chat / Plan sample prompts</td><td class="asgn">Mingxuan Zhang</td><td class="pts">2</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a4DSBYAZ/view" target="_blank">W-22478663</a></td><td class="subj">AFV v4 Plan Mode: Plans tab renders PlanList of approved plans from user</td><td class="asgn">Mingxuan Zhang</td><td class="pts">3</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a4DhBYAU/view" target="_blank">W-22478671</a></td><td class="subj">AFV v4 Plan Mode: Open approved plan in a separate task board WebviewPanel</td><td class="asgn">Mingxuan Zhang</td><td class="pts">5</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwvSYYAZ/view" target="_blank">W-22475837</a></td><td class="subj">AFV v4 Plan Mode: Decide and implement ChatSession reuse policy for plan mode</td><td class="asgn">Platform Dev Tools</td><td class="pts">2</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwvDfYAJ/view" target="_blank">W-22475843</a></td><td class="subj">AFV v4 Plan Mode: Replace fixture plan with LLM-backed generation via FeatureContext.invokeAgent</td><td class="asgn">Platform Dev Tools</td><td class="pts">8</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Zww0BYAZ/view" target="_blank">W-22475846</a></td><td class="subj">AFV v4 Plan Mode: Drive execution:update from real runtime events</td><td class="asgn">Platform Dev Tools</td><td class="pts">5</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwwJoYAJ/view" target="_blank">W-22475855</a></td><td class="subj">AFV v4 Plan Mode: Migrate plan generation from free-text JSON to SDK tool calls</td><td class="asgn">Platform Dev Tools</td><td class="pts">5</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZwwXyYAJ/view" target="_blank">W-22475861</a></td><td class="subj">AFV v4 Plan Mode: Record and replay end-to-end plan-mode trace in @afv</td><td class="asgn">Platform Dev Tools</td><td class="pts">3</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- W-22497195 · Multi-turn chat · IN PROGRESS 4/6 -->
+  <div class="parent-card s-in-progress" onclick="toggle(this)">
+    <div class="parent-header">
+      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a3FKBYA2/view" target="_blank" onclick="event.stopPropagation()">W-22497195</a></div>
+      <div class="parent-subject">Parent WI: Talk to an AI agent in the sidebar — Multi turn chat with tool calls</div>
+      <div class="parent-assignee">Cristina Cañizales</div>
+      <div class="parent-meta">
+        <div class="bar-wrap"><div class="bar-fill fill-yellow" style="width:67%"></div></div>
+        <div class="progress-pill">4 / 6 done</div>
+        <span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span>
+      </div>
+      <div class="chevron">▶</div>
+    </div>
+    <div class="child-table">
+      <table>
+        <thead><tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZktcTYAR/view" target="_blank">W-22430519</a></td><td class="subj">UX:Chat - Basic back-and-forth conversation</td><td class="asgn">Cristina Cañizales</td><td class="pts">3</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZkisSYAR/view" target="_blank">W-22430524</a></td><td class="subj">UX:Chat - Render tool calls and agent reasoning</td><td class="asgn">Cristina Cañizales</td><td class="pts">3</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZktmDYAR/view" target="_blank">W-22430547</a></td><td class="subj">UX:Chat: Implement diff view in Chat</td><td class="asgn">Mingxuan Zhang</td><td class="pts">3</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZxRv7YAF/view" target="_blank">W-22478314</a></td><td class="subj">Chat Management</td><td class="asgn">Jonathan Gellin</td><td class="pts">3</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZkfJiYAJ/view" target="_blank">W-22430545</a></td><td class="subj">UX:Chat - Search and export conversations</td><td class="asgn">Cristina Cañizales</td><td class="pts">3</td><td><span class="badge b-qa"><span class="dot do"></span>QA In Progress</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZktgHYAR/view" target="_blank">W-22430542</a></td><td class="subj">UX:Chat - Multiple conversations via tabs</td><td class="asgn">Michael Gutin</td><td class="pts">3</td><td><span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -323,106 +226,13 @@
       <table>
         <thead><tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
         <tbody>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZdUqfYAF/view" target="_blank">W-22416871</a></td>
-            <td class="subj">Create new claude agent sdk package in agentic-dx</td>
-            <td class="asgn">Luis Hernandez</td><td class="pts">3</td>
-            <td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vJGYAI/view" target="_blank">W-22554527</a></td>
-            <td class="subj">Publish Claude Harness Package to NPM</td>
-            <td class="asgn">Luis Hernandez</td><td class="pts">2</td>
-            <td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6yrQYAI/view" target="_blank">W-22546063</a></td>
-            <td class="subj">Consume @salesforce/sfdx-agent-harness-claude in Agentforce for Vibes</td>
-            <td class="asgn">Luis Hernandez</td><td class="pts">2</td>
-            <td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8NJRYA4/view" target="_blank">W-22583536</a></td>
-            <td class="subj">Unify transport and model resolution into ClaudeTransportResolver</td>
-            <td class="asgn">Luis Hernandez</td><td class="pts">1</td>
-            <td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vJHYAI/view" target="_blank">W-22511383</a></td>
-            <td class="subj">Tool Approval Gating</td>
-            <td class="asgn">Luis Hernandez</td><td class="pts">3</td>
-            <td><span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8NJuYA4/view" target="_blank">W-22583690</a></td>
-            <td class="subj">Wire MCP server configuration into the Claude harness</td>
-            <td class="asgn">Luis Hernandez</td><td class="pts">2</td>
-            <td><span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6yrRYAI/view" target="_blank">W-22546119</a></td>
-            <td class="subj">Skills Path Passthrough (not present in options builder)</td>
-            <td class="asgn">Luis Hernandez</td><td class="pts">—</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- W-22497195 · Multi-turn chat · IN PROGRESS 3/6 -->
-  <div class="parent-card s-in-progress" onclick="toggle(this)">
-    <div class="parent-header">
-      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a3FKBYA2/view" target="_blank" onclick="event.stopPropagation()">W-22497195</a></div>
-      <div class="parent-subject">Parent WI: Talk to an AI agent in the sidebar — Multi turn chat with tool calls</div>
-      <div class="parent-assignee">Cristina Cañizales</div>
-      <div class="parent-meta">
-        <div class="bar-wrap"><div class="bar-fill fill-yellow" style="width:50%"></div></div>
-        <div class="progress-pill">3 / 6 done</div>
-        <span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span>
-      </div>
-      <div class="chevron">▶</div>
-    </div>
-    <div class="child-table">
-      <table>
-        <thead><tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZktcTYAR/view" target="_blank">W-22430519</a></td>
-            <td class="subj">UX:Chat - Basic back-and-forth conversation</td>
-            <td class="asgn">Cristina Cañizales</td><td class="pts">3</td>
-            <td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZkisSYAR/view" target="_blank">W-22430524</a></td>
-            <td class="subj">UX:Chat - Render tool calls and agent reasoning</td>
-            <td class="asgn">Cristina Cañizales</td><td class="pts">3</td>
-            <td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZxRv7YAF/view" target="_blank">W-22478314</a></td>
-            <td class="subj">Chat Management</td>
-            <td class="asgn">Jonathan Gellin</td><td class="pts">3</td>
-            <td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZkfJiYAJ/view" target="_blank">W-22430545</a></td>
-            <td class="subj">UX:Chat - Search and export conversations</td>
-            <td class="asgn">Cristina Cañizales</td><td class="pts">3</td>
-            <td><span class="badge b-qa"><span class="dot do"></span>QA In Progress</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZktgHYAR/view" target="_blank">W-22430542</a></td>
-            <td class="subj">UX:Chat - Multiple conversations via tabs</td>
-            <td class="asgn">Michael Gutin</td><td class="pts">3</td>
-            <td><span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZktmDYAR/view" target="_blank">W-22430547</a></td>
-            <td class="subj">UX:Chat: Implement diff view in Chat</td>
-            <td class="asgn">Mingxuan Zhang</td><td class="pts">3</td>
-            <td><span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span></td>
-          </tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZdUqfYAF/view" target="_blank">W-22416871</a></td><td class="subj">Create new claude agent sdk package in agentic-dx</td><td class="asgn">Luis Hernandez</td><td class="pts">3</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vJGYAI/view" target="_blank">W-22554527</a></td><td class="subj">Publish Claude Harness Package to NPM</td><td class="asgn">Luis Hernandez</td><td class="pts">2</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6yrQYAI/view" target="_blank">W-22546063</a></td><td class="subj">Consume @salesforce/sfdx-agent-harness-claude in Agentforce for Vibes</td><td class="asgn">Luis Hernandez</td><td class="pts">2</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8NJRYA4/view" target="_blank">W-22583536</a></td><td class="subj">Unify transport and model resolution into ClaudeTransportResolver</td><td class="asgn">Luis Hernandez</td><td class="pts">1</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vJHYAI/view" target="_blank">W-22511383</a></td><td class="subj">Tool Approval Gating</td><td class="asgn">Luis Hernandez</td><td class="pts">3</td><td><span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8NJuYA4/view" target="_blank">W-22583690</a></td><td class="subj">Wire MCP server configuration into the Claude harness</td><td class="asgn">Luis Hernandez</td><td class="pts">2</td><td><span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6yrRYAI/view" target="_blank">W-22546119</a></td><td class="subj">Skills Path Passthrough (not present in options builder)</td><td class="asgn">Luis Hernandez</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -445,36 +255,34 @@
       <table>
         <thead><tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
         <tbody>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8MA0YAM/view" target="_blank">W-22576169</a></td>
-            <td class="subj">Add Storybook CI runner to catch UI component regressions</td>
-            <td class="asgn">Mohan Raj Rajamanickam</td><td class="pts">2</td>
-            <td><span class="badge b-review"><span class="dot db"></span>Ready for Review</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycqt0YAF/view" target="_blank">W-22174365</a></td>
-            <td class="subj">Week 2: Implement MCP infrastructure with stdio DX server</td>
-            <td class="asgn">Mohan Raj Rajamanickam</td><td class="pts">3</td>
-            <td><span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycqw3YAF/view" target="_blank">W-22174366</a></td>
-            <td class="subj">Week 3: Implement platform-hosted MCP servers with JWT auth</td>
-            <td class="asgn">Mohan Raj Rajamanickam</td><td class="pts">3</td>
-            <td><span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002YcqzJYAR/view" target="_blank">W-22174367</a></td>
-            <td class="subj">Week 3: Implement skills discovery, toggle, and use_skill tool call</td>
-            <td class="asgn">Platform Dev Tools</td><td class="pts">—</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a1g8mYAA/view" target="_blank">W-22437953</a></td>
-            <td class="subj">Week 4: Implement afv-library skills update</td>
-            <td class="asgn">Mohan Raj Rajamanickam</td><td class="pts">3</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8MA0YAM/view" target="_blank">W-22576169</a></td><td class="subj">Add Storybook CI runner to catch UI component regressions</td><td class="asgn">Mohan Raj Rajamanickam</td><td class="pts">2</td><td><span class="badge b-review"><span class="dot db"></span>Ready for Review</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycqt0YAF/view" target="_blank">W-22174365</a></td><td class="subj">Week 2: Implement MCP infrastructure with stdio DX server</td><td class="asgn">Mohan Raj Rajamanickam</td><td class="pts">3</td><td><span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycqw3YAF/view" target="_blank">W-22174366</a></td><td class="subj">Week 3: Implement platform-hosted MCP servers with JWT auth</td><td class="asgn">Mohan Raj Rajamanickam</td><td class="pts">3</td><td><span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002YcqzJYAR/view" target="_blank">W-22174367</a></td><td class="subj">Week 3: Implement skills discovery, toggle, and use_skill tool call</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a1g8mYAA/view" target="_blank">W-22437953</a></td><td class="subj">Week 4: Implement afv-library skills update</td><td class="asgn">Mohan Raj Rajamanickam</td><td class="pts">3</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- W-22497229 · Permissions · IN PROGRESS 1/1 (parent re-opened) -->
+  <div class="parent-card s-in-progress" onclick="toggle(this)">
+    <div class="parent-header">
+      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a3a1BYAQ/view" target="_blank" onclick="event.stopPropagation()">W-22497229</a></div>
+      <div class="parent-subject">Parent WI: Permissions</div>
+      <div class="parent-assignee">Kenneth Lewis</div>
+      <div class="parent-meta">
+        <div class="bar-wrap"><div class="bar-fill fill-green" style="width:100%"></div></div>
+        <div class="progress-pill">1 / 1 done</div>
+        <span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span>
+      </div>
+      <div class="chevron">▶</div>
+    </div>
+    <div class="child-table">
+      <table>
+        <thead><tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8MA1YAM/view" target="_blank">W-22577323</a></td><td class="subj">Safe Commands Guard + User-Editable Command Allowlist</td><td class="asgn">Kenneth Lewis</td><td class="pts">—</td><td><span class="badge b-completed"><span class="dot dg"></span>Closed</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -497,42 +305,12 @@
       <table>
         <thead><tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
         <tbody>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8q6KYAX/view" target="_blank">W-22573237</a></td>
-            <td class="subj">[Monetization][W1] Create Entitlement Context</td>
-            <td class="asgn">Jasmine Jin</td><td class="pts">3</td>
-            <td><span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8q6LYAX/view" target="_blank">W-22573370</a></td>
-            <td class="subj">[Monetization][W2] Create Model Tier Registry</td>
-            <td class="asgn">Jasmine Jin</td><td class="pts">2</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8q6MYAX/view" target="_blank">W-22573502</a></td>
-            <td class="subj">[Monetization][W3] Create Billing Header Selection</td>
-            <td class="asgn">Jasmine Jin</td><td class="pts">2</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8q6NYAX/view" target="_blank">W-22573727</a></td>
-            <td class="subj">[Monetization][W4] Create RateLimitStore and RateLimitService</td>
-            <td class="asgn">Jasmine Jin</td><td class="pts">3</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8q6OYAX/view" target="_blank">W-22573751</a></td>
-            <td class="subj">[Monetization][W5] Create Fallback Handler</td>
-            <td class="asgn">Jasmine Jin</td><td class="pts">3</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8q6PYAX/view" target="_blank">W-22573826</a></td>
-            <td class="subj">[Monetization][W6] Wire UI with Backend Monetization Logic</td>
-            <td class="asgn">Jasmine Jin</td><td class="pts">3</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8q6KYAX/view" target="_blank">W-22573237</a></td><td class="subj">[Monetization][W1] Create Entitlement Context</td><td class="asgn">Jasmine Jin</td><td class="pts">3</td><td><span class="badge b-review"><span class="dot db"></span>Ready for Review</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8q6LYAX/view" target="_blank">W-22573370</a></td><td class="subj">[Monetization][W2] Create Model Tier Registry</td><td class="asgn">Jasmine Jin</td><td class="pts">2</td><td><span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8q6MYAX/view" target="_blank">W-22573502</a></td><td class="subj">[Monetization][W3] Create Billing Header Selection</td><td class="asgn">Jasmine Jin</td><td class="pts">2</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8q6NYAX/view" target="_blank">W-22573727</a></td><td class="subj">[Monetization][W4] Create RateLimitStore and RateLimitService</td><td class="asgn">Jasmine Jin</td><td class="pts">3</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8q6OYAX/view" target="_blank">W-22573751</a></td><td class="subj">[Monetization][W5] Create Fallback Handler</td><td class="asgn">Jasmine Jin</td><td class="pts">3</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a8q6PYAX/view" target="_blank">W-22573826</a></td><td class="subj">[Monetization][W6] Wire UI with Backend Monetization Logic</td><td class="asgn">Jasmine Jin</td><td class="pts">3</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -551,12 +329,10 @@
       </div>
       <div class="chevron">▶</div>
     </div>
-    <div class="child-table">
-      <div class="no-children">No child work items linked in GUS yet.</div>
-    </div>
+    <div class="child-table"><div class="no-children">No child work items linked in GUS yet.</div></div>
   </div>
 
-  <!-- W-22497285 · Telemetry · NOT STARTED 0/1 -->
+  <!-- W-22497285 · Telemetry · NOT STARTED 0/16 -->
   <div class="parent-card s-not-started" onclick="toggle(this)">
     <div class="parent-header">
       <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a3XmbYAE/view" target="_blank" onclick="event.stopPropagation()">W-22497285</a></div>
@@ -564,7 +340,7 @@
       <div class="parent-assignee">Platform Dev Tools</div>
       <div class="parent-meta">
         <div class="bar-wrap"><div class="bar-fill fill-muted" style="width:0%"></div></div>
-        <div class="progress-pill">0 / 1 done</div>
+        <div class="progress-pill">0 / 16 done</div>
         <span class="badge b-not-started"><span class="dot dm"></span>Not Started</span>
       </div>
       <div class="chevron">▶</div>
@@ -573,12 +349,22 @@
       <table>
         <thead><tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
         <tbody>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vLTYAI/view" target="_blank">W-22550973</a></td>
-            <td class="subj">Ensure User-Agent for all providers includes the phrase 'agentforce-vibes'</td>
-            <td class="asgn">Platform Dev Tools</td><td class="pts">—</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vLTYAI/view" target="_blank">W-22550973</a></td><td class="subj">Ensure User-Agent for all providers includes the phrase 'agentforce-vibes'</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a9c6tYAA/view" target="_blank">W-22607260</a></td><td class="subj">Ship SalesforceTelemetrySink Core</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a9c6uYAA/view" target="_blank">W-22607367</a></td><td class="subj">V3-Compat Shim Transform Layer</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a9c6vYAA/view" target="_blank">W-22608271</a></td><td class="subj">Emit Agentic Chat API Call Event for DAU/DAO</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a9c6wYAA/view" target="_blank">W-22608303</a></td><td class="subj">Audit Workbook Queries Against Event Mapping Table</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a9c6xYAA/view" target="_blank">W-22608309</a></td><td class="subj">Add commandSource Context to V4 Event Schema</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a9c6yYAA/view" target="_blank">W-22608312</a></td><td class="subj">Add Extension Version Filter to Workbooks</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a9c6zYAA/view" target="_blank">W-22608582</a></td><td class="subj">Define Agentic Chat Accept/Reject Events</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a9c70YAA/view" target="_blank">W-22608586</a></td><td class="subj">Emit Agentic Chat Interaction Event (Generations)</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a9c71YAA/view" target="_blank">W-22608587</a></td><td class="subj">Emit Token Usage Event for Agentic Chat</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a9c72YAA/view" target="_blank">W-22608592</a></td><td class="subj">Route Agentic Chat Errors to App Insights Exceptions Table</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a9c73YAA/view" target="_blank">W-22608612</a></td><td class="subj">Emit MCP Tool Usage Events</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a9c74YAA/view" target="_blank">W-22608627</a></td><td class="subj">Emit MCP Server Lifecycle Events</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a9c75YAA/view" target="_blank">W-22608642</a></td><td class="subj">Emit MCP Prompt Statistics Event</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a9c76YAA/view" target="_blank">W-22608658</a></td><td class="subj">Migrate Agentic Chat Workbook to V4-Native Events</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a9c77YAA/view" target="_blank">W-22608662</a></td><td class="subj">Migrate MCP Report Workbook to V4-Native Events</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -597,9 +383,7 @@
       </div>
       <div class="chevron">▶</div>
     </div>
-    <div class="child-table">
-      <div class="no-children">No child work items currently linked in GUS.</div>
-    </div>
+    <div class="child-table"><div class="no-children">No child work items currently linked in GUS.</div></div>
   </div>
 
   <!-- W-22511168 · BYOK · NOT STARTED 0/4 -->
@@ -619,30 +403,10 @@
       <table>
         <thead><tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
         <tbody>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vR5YAI/view" target="_blank">W-22548469</a></td>
-            <td class="subj">Claude SDK will result in LLMG Express rate limiting</td>
-            <td class="asgn">Platform Dev Tools</td><td class="pts">—</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vR6YAI/view" target="_blank">W-22548951</a></td>
-            <td class="subj">BYOK Feature Flag, Key, and Endpoint Settings</td>
-            <td class="asgn">Jonathan Gellin</td><td class="pts">2</td>
-            <td><span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vR7YAI/view" target="_blank">W-22549139</a></td>
-            <td class="subj">LLM Express AI Provider UI</td>
-            <td class="asgn">Platform Dev Tools</td><td class="pts">—</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vR8YAI/view" target="_blank">W-22549188</a></td>
-            <td class="subj">LLM Express-configured agents route LLM Calls to LLM Express baseUrl</td>
-            <td class="asgn">Platform Dev Tools</td><td class="pts">—</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vR5YAI/view" target="_blank">W-22548469</a></td><td class="subj">Claude SDK will result in LLMG Express rate limiting</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vR6YAI/view" target="_blank">W-22548951</a></td><td class="subj">BYOK Feature Flag, Key, and Endpoint Settings</td><td class="asgn">Jonathan Gellin</td><td class="pts">2</td><td><span class="badge b-in-progress"><span class="dot dy"></span>In Progress</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vR7YAI/view" target="_blank">W-22549139</a></td><td class="subj">LLM Express AI Provider UI</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vR8YAI/view" target="_blank">W-22549188</a></td><td class="subj">LLM Express-configured agents route LLM Calls to LLM Express baseUrl</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -665,30 +429,10 @@
       <table>
         <thead><tr><th>Work ID</th><th>Subject</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
         <tbody>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002YcqttYAF/view" target="_blank">W-22174368</a></td>
-            <td class="subj">Week 3: Implement abilities/RAG for DX MCP server tool selection</td>
-            <td class="asgn">Platform Dev Tools</td><td class="pts">—</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycs5LYAR/view" target="_blank">W-22174392</a></td>
-            <td class="subj">Week 5: Implement SDK-level context management and compaction</td>
-            <td class="asgn">Platform Dev Tools</td><td class="pts">—</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycs5MYAR/view" target="_blank">W-22174393</a></td>
-            <td class="subj">Week 5: Implement @-mention and SObject context injection</td>
-            <td class="asgn">Platform Dev Tools</td><td class="pts">—</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
-          <tr>
-            <td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycs5KYAR/view" target="_blank">W-22174396</a></td>
-            <td class="subj">Week 5: Implement slash commands for mode switching and custom actions</td>
-            <td class="asgn">Platform Dev Tools</td><td class="pts">—</td>
-            <td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td>
-          </tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002YcqttYAF/view" target="_blank">W-22174368</a></td><td class="subj">Week 3: Implement abilities/RAG for DX MCP server tool selection</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycs5LYAR/view" target="_blank">W-22174392</a></td><td class="subj">Week 5: Implement SDK-level context management and compaction</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycs5MYAR/view" target="_blank">W-22174393</a></td><td class="subj">Week 5: Implement @-mention and SObject context injection</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
+          <tr><td class="wid"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Ycs5KYAR/view" target="_blank">W-22174396</a></td><td class="subj">Week 5: Implement slash commands for mode switching and custom actions</td><td class="asgn">Platform Dev Tools</td><td class="pts">—</td><td><span class="badge b-not-started"><span class="dot dm"></span>New</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -697,12 +441,11 @@
 </div>
 
 <footer>
-  Data pulled from GUS · Epic <a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a3QEE000002LVE92AO/view" target="_blank">[AFV][264] AFV Vibes 2.0</a> · Agentforce Vibes Team · Updated 2026-05-21
+  Data pulled from GUS · Epic <a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a3QEE000002LVE92AO/view" target="_blank">[AFV][264] AFV Vibes 2.0</a> · Agentforce Vibes Team · Updated 2026-05-22
 </footer>
 
 <script>
   function toggle(card) { card.classList.toggle('open'); }
 </script>
-
 </body>
 </html>
