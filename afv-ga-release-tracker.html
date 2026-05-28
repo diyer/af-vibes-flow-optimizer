@@ -997,28 +997,31 @@
 <!-- ===== GA RELEASE BLOCKER BUGS ===== -->
 <div class="section-divider">
   <div class="section-title">GA Release Blocker Bugs</div>
-  <div class="section-subtitle">Open bugs affecting Agentforce Vibes GA readiness · Sorted by priority</div>
+  <div class="section-subtitle">
+    <a href="https://gus.lightning.force.com/lightning/r/Report/00OEE0000038IkP2AU/view?queryScope=userFolders" target="_blank" style="color:var(--blue)">AFV Vibes 2.0 GA bugs report ↗</a>
+    &nbsp;·&nbsp; 13 total · sorted by priority
+  </div>
 
   <div class="bugs-summary">
     <div class="stat-card">
       <div class="label">Total Bugs</div>
-      <div class="value blue">49</div>
-      <div class="sub">all time</div>
+      <div class="value blue">13</div>
+      <div class="sub">in GA bugs report</div>
     </div>
     <div class="stat-card">
-      <div class="label">Closed / Resolved</div>
-      <div class="value green">40</div>
-      <div class="sub">Closed · Not a Bug · Duplicate · Never</div>
+      <div class="label">Closed</div>
+      <div class="value green">1</div>
+      <div class="sub">resolved</div>
     </div>
     <div class="stat-card">
-      <div class="label">Open</div>
-      <div class="value red">6</div>
-      <div class="sub">New · Waiting · Triaged</div>
+      <div class="label">Open / Active</div>
+      <div class="value red">11</div>
+      <div class="sub">New · In Progress</div>
     </div>
     <div class="stat-card">
-      <div class="label">In QA / Fixed</div>
-      <div class="value yellow">3</div>
-      <div class="sub">Fixed · QA In Progress</div>
+      <div class="label">P1 Blockers</div>
+      <div class="value" style="color:var(--red)">9</div>
+      <div class="sub">highest priority</div>
     </div>
   </div>
 
@@ -1030,62 +1033,97 @@
       <tbody>
         <!-- P1 -->
         <tr>
-          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZLtAUYA1/view" target="_blank">W-22360106</a></td>
+          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002awxJEYAY/view" target="_blank">W-22687928</a></td>
           <td><span class="priority-badge priority-p1">P1</span></td>
-          <td class="subject-cell">[FY27] Agentforce Vibes/CodeBuilder Container Shell Injection / Container Privilege Escalation</td>
-          <td class="assignee-cell">Nitin Lakshmanan</td>
+          <td class="subject-cell">[Mastra] Play Station prompt or any other prompt does not complete executing through Mastra SDK</td>
+          <td class="assignee-cell">Platform Dev Tools</td>
+          <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+        </tr>
+        <tr>
+          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002axScQYAU/view" target="_blank">W-22687941</a></td>
+          <td><span class="priority-badge priority-p1">P1</span></td>
+          <td class="subject-cell">Play Station prompt does not complete executing through Claude SDK</td>
+          <td class="assignee-cell">Platform Dev Tools</td>
+          <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+        </tr>
+        <tr>
+          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002b1bIeYAI/view" target="_blank">W-22702987</a></td>
+          <td><span class="priority-badge priority-p1">P1</span></td>
+          <td class="subject-cell">Running DX MCP server tools through Mastra SDK does not succeed</td>
+          <td class="assignee-cell">Platform Dev Tools</td>
+          <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+        </tr>
+        <tr>
+          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002b2F4oYAE/view" target="_blank">W-22704867</a></td>
+          <td><span class="priority-badge priority-p1">P1</span></td>
+          <td class="subject-cell">[Mastra] Chat stops with "MastraHarness.approveToolCall(): no active run found for thread" error</td>
+          <td class="assignee-cell">Platform Dev Tools</td>
+          <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+        </tr>
+        <tr>
+          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002b2Px7YAE/view" target="_blank">W-22706382</a></td>
+          <td><span class="priority-badge priority-p1">P1</span></td>
+          <td class="subject-cell">[Claude] Running commands getting blocked on tool approval</td>
+          <td class="assignee-cell">Platform Dev Tools</td>
+          <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+        </tr>
+        <tr>
+          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002b2ePvYAI/view" target="_blank">W-22706538</a></td>
+          <td><span class="priority-badge priority-p1">P1</span></td>
+          <td class="subject-cell">[Claude] Claude seems to be stuck in long thinking mode unable to complete a basic prompt in time</td>
+          <td class="assignee-cell">Platform Dev Tools</td>
+          <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+        </tr>
+        <tr>
+          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002b2bGqYAI/view" target="_blank">W-22706619</a></td>
+          <td><span class="priority-badge priority-p1">P1</span></td>
+          <td class="subject-cell">[Claude] 0 MCP server tools retrieved through Claude</td>
+          <td class="assignee-cell">Platform Dev Tools</td>
+          <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+        </tr>
+        <tr>
+          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002b2d46YAA/view" target="_blank">W-22706627</a></td>
+          <td><span class="priority-badge priority-p1">P1</span></td>
+          <td class="subject-cell">[Claude] Diff editor is not working</td>
+          <td class="assignee-cell">Platform Dev Tools</td>
+          <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+        </tr>
+        <tr>
+          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002b2WETYA2/view" target="_blank">W-22706717</a></td>
+          <td><span class="priority-badge priority-p1">P1</span></td>
+          <td class="subject-cell">Test Vibes 2.0 GA on CodeBuilder</td>
+          <td class="assignee-cell">Platform Dev Tools</td>
           <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
         </tr>
         <!-- P2 -->
         <tr>
-          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002OGdK6YAL/view" target="_blank">W-20064721</a></td>
+          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Zwg17YAB/view" target="_blank">W-22476350</a></td>
           <td><span class="priority-badge priority-p2">P2</span></td>
-          <td class="subject-cell">Agentforce Vibes IDE page access check should use access check for "isCodeBuilderInCoreAvailable"</td>
-          <td class="assignee-cell">Code Builder Team User</td>
-          <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
-        </tr>
-        <tr>
-          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002WEAlmYAH/view" target="_blank">W-21579320</a></td>
-          <td><span class="priority-badge priority-p2">P2</span></td>
-          <td class="subject-cell">Input schema under Parameters has No Description in the cursor (IDE) / agentforce vibes plugin</td>
+          <td class="subject-cell">'sf org open' does not open browser when invoked by agent</td>
           <td class="assignee-cell">Platform Dev Tools</td>
           <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
         </tr>
         <tr>
-          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002WcDc9YAF/view" target="_blank">W-21671420</a></td>
+          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002abFMWYA2/view" target="_blank">W-22601255</a></td>
           <td><span class="priority-badge priority-p2">P2</span></td>
-          <td class="subject-cell">Claude Sonnet model returns tool_input error — Einstein Foundations blocker for Agentforce Vibes</td>
-          <td class="assignee-cell">Einstein GPT Foundations</td>
-          <td><span class="badge badge-waiting"><span class="dot dot-purple"></span>Waiting</span></td>
+          <td class="subject-cell">Mastra - AFV 2.0 (rearch) errors out when running sf commands</td>
+          <td class="assignee-cell">Mike Mikula</td>
+          <td><span class="badge badge-in-progress"><span class="dot dot-yellow"></span>In Progress</span></td>
         </tr>
         <tr>
-          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Yu2XsYAJ/view" target="_blank">W-22241396</a></td>
+          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002b2Ge1YAE/view" target="_blank">W-22706402</a></td>
           <td><span class="priority-badge priority-p2">P2</span></td>
-          <td class="subject-cell">[Flow Visual Comparison] Flows generated using Agentforce Vibes don't have IsGoto attribute for connectors</td>
-          <td class="assignee-cell">Cedric Chabanois</td>
-          <td><span class="badge badge-review"><span class="dot dot-blue"></span>QA In Progress</span></td>
-        </tr>
-        <tr>
-          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002aujLUYAY/view" target="_blank">W-22678091</a></td>
-          <td><span class="priority-badge priority-p2">P2</span></td>
-          <td class="subject-cell">Open Vibes link on app manager UI leads to about:blank page instead of Agentforce Vibes URL</td>
-          <td class="assignee-cell">Sanjoti Thakare</td>
-          <td><span class="badge badge-fixed"><span class="dot dot-blue"></span>Fixed</span></td>
+          <td class="subject-cell">Exporting chat conversation is broken</td>
+          <td class="assignee-cell">Platform Dev Tools</td>
+          <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
         </tr>
         <!-- P3 -->
         <tr>
-          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002QjQwPYAV/view" target="_blank">W-20450643</a></td>
+          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002adCTPYA2/view" target="_blank">W-22605860</a></td>
           <td><span class="priority-badge priority-p3">P3</span></td>
-          <td class="subject-cell">Image Links Broken on vscode.dev Agentforce Vibes page</td>
-          <td class="assignee-cell">Platform Dev Tools</td>
-          <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
-        </tr>
-        <tr>
-          <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002aFJt9YAG/view" target="_blank">W-22538973</a></td>
-          <td><span class="priority-badge priority-p3">P3</span></td>
-          <td class="subject-cell">[Block Builder / Agentforce Vibes - CMS Brands] Potential Japanese IME issue: Enter-key handler missing IME composition check</td>
-          <td class="assignee-cell">Block Builder Team</td>
-          <td><span class="badge badge-triaged"><span class="dot dot-purple"></span>Triaged</span></td>
+          <td class="subject-cell">[vibes-ui] ChatTabBar tabs overflow when tab name too long</td>
+          <td class="assignee-cell">Michael Gutin</td>
+          <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
         </tr>
       </tbody>
     </table>
