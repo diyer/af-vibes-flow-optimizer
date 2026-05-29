@@ -200,12 +200,12 @@
   </div>
   <div class="stat-card">
     <div class="label">Completed</div>
-    <div class="value green">2</div>
-    <div class="sub">all children closed</div>
+    <div class="value green">3</div>
+    <div class="sub">incl. all must-haves done</div>
   </div>
   <div class="stat-card">
     <div class="label">In Progress</div>
-    <div class="value yellow">8</div>
+    <div class="value yellow">7</div>
     <div class="sub">partially done</div>
   </div>
   <div class="stat-card">
@@ -332,6 +332,72 @@
   </div>
 
   <!-- ═══════════════════════════════════════════════════════
+       W-22497198 · Agent SDK Integration · ALL MUST HAVES COMPLETED
+       ═══════════════════════════════════════════════════════ -->
+  <div class="parent-card status-completed" onclick="toggle(this)">
+    <div class="parent-header">
+      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a3TURYA2/view" target="_blank" onclick="event.stopPropagation()">W-22497198</a></div>
+      <div class="parent-subject">Agent SDK Integration with Claude and Mastra</div>
+      <div class="parent-assignee">Luis Hernandez</div>
+      <div class="parent-meta">
+        <div class="progress-bar-wrap"><div class="progress-bar-fill fill-green" style="width:100%"></div></div>
+        <div class="progress-pill">6 / 7 done</div>
+        <span class="badge badge-completed"><span class="dot dot-green"></span>All Must Haves Completed</span>
+      </div>
+      <div class="chevron">▶</div>
+    </div>
+    <div class="child-table">
+      <table>
+        <thead><tr><th>Work ID</th><th>Feature</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZdUqfYAF/view" target="_blank">W-22416871</a></td>
+            <td class="subject-cell">Create new Claude agent SDK package in agentic-dx</td>
+            <td class="assignee-cell">Luis Hernandez</td><td class="pts-cell">3</td>
+            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6lvPYAQ/view" target="_blank">W-22511383</a></td>
+            <td class="subject-cell">Tool Approval Gating</td>
+            <td class="assignee-cell">Luis Hernandez</td><td class="pts-cell">3</td>
+            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002aHykXYAS/view" target="_blank">W-22546063</a></td>
+            <td class="subject-cell">Consume @salesforce/sfdx-agent-harness-claude in Agentforce for Vibes</td>
+            <td class="assignee-cell">Luis Hernandez</td><td class="pts-cell">2</td>
+            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002aK74jYAC/view" target="_blank">W-22554527</a></td>
+            <td class="subject-cell">Publish Claude Harness Package to NPM</td>
+            <td class="assignee-cell">Luis Hernandez</td><td class="pts-cell">2</td>
+            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vJHYAI/view" target="_blank">W-22583536</a></td>
+            <td class="subject-cell">Unify transport and model resolution into ClaudeTransportResolver; make permissionMode required</td>
+            <td class="assignee-cell">Luis Hernandez</td><td class="pts-cell">1</td>
+            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vJGYAI/view" target="_blank">W-22583690</a></td>
+            <td class="subject-cell">Wire MCP server configuration into the Claude harness</td>
+            <td class="assignee-cell">Luis Hernandez</td><td class="pts-cell">2</td>
+            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
+          </tr>
+          <tr>
+            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002aIAtRYAW/view" target="_blank">W-22546119</a></td>
+            <td class="subject-cell">Skills Path Passthrough (not present in options builder) <span style="font-size:10px;color:var(--orange);background:var(--orange-bg);padding:1px 7px;border-radius:10px;font-weight:600;margin-left:6px;">Nice to Have</span></td>
+            <td class="assignee-cell">Luis Hernandez</td><td class="pts-cell">—</td>
+            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
        W-22497295 · Planner · IN PROGRESS (7/12)
        ═══════════════════════════════════════════════════════ -->
   <div class="parent-card status-in-progress" onclick="toggle(this)">
@@ -420,72 +486,6 @@
             <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002Zwm61YAB/view" target="_blank">W-22475861</a></td>
             <td class="subject-cell">Plan Mode: Record and replay end-to-end plan-mode trace in @afv/e2e</td>
             <td class="assignee-cell">—</td><td class="pts-cell">3</td>
-            <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════════════════
-       W-22497198 · Agent SDK Integration · IN PROGRESS (6/7)
-       ═══════════════════════════════════════════════════════ -->
-  <div class="parent-card status-in-progress" onclick="toggle(this)">
-    <div class="parent-header">
-      <div class="parent-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a3TURYA2/view" target="_blank" onclick="event.stopPropagation()">W-22497198</a></div>
-      <div class="parent-subject">Agent SDK Integration with Claude and Mastra</div>
-      <div class="parent-assignee">Luis Hernandez</div>
-      <div class="parent-meta">
-        <div class="progress-bar-wrap"><div class="progress-bar-fill fill-yellow" style="width:86%"></div></div>
-        <div class="progress-pill">6 / 7 done</div>
-        <span class="badge badge-in-progress"><span class="dot dot-yellow"></span>In Progress</span>
-      </div>
-      <div class="chevron">▶</div>
-    </div>
-    <div class="child-table">
-      <table>
-        <thead><tr><th>Work ID</th><th>Feature</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr>
-            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002ZdUqfYAF/view" target="_blank">W-22416871</a></td>
-            <td class="subject-cell">Create new Claude agent SDK package in agentic-dx</td>
-            <td class="assignee-cell">Luis Hernandez</td><td class="pts-cell">3</td>
-            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6lvPYAQ/view" target="_blank">W-22511383</a></td>
-            <td class="subject-cell">Tool Approval Gating</td>
-            <td class="assignee-cell">Luis Hernandez</td><td class="pts-cell">3</td>
-            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002aHykXYAS/view" target="_blank">W-22546063</a></td>
-            <td class="subject-cell">Consume @salesforce/sfdx-agent-harness-claude in Agentforce for Vibes</td>
-            <td class="assignee-cell">Luis Hernandez</td><td class="pts-cell">2</td>
-            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002aK74jYAC/view" target="_blank">W-22554527</a></td>
-            <td class="subject-cell">Publish Claude Harness Package to NPM</td>
-            <td class="assignee-cell">Luis Hernandez</td><td class="pts-cell">2</td>
-            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vJHYAI/view" target="_blank">W-22583536</a></td>
-            <td class="subject-cell">Unify transport and model resolution into ClaudeTransportResolver; make permissionMode required</td>
-            <td class="assignee-cell">Luis Hernandez</td><td class="pts-cell">1</td>
-            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002a6vJGYAI/view" target="_blank">W-22583690</a></td>
-            <td class="subject-cell">Wire MCP server configuration into the Claude harness</td>
-            <td class="assignee-cell">Luis Hernandez</td><td class="pts-cell">2</td>
-            <td><span class="badge badge-completed"><span class="dot dot-green"></span>Closed</span></td>
-          </tr>
-          <tr>
-            <td class="work-id"><a href="https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00002aIAtRYAW/view" target="_blank">W-22546119</a></td>
-            <td class="subject-cell">Skills Path Passthrough (not present in options builder)</td>
-            <td class="assignee-cell">Luis Hernandez</td><td class="pts-cell">—</td>
             <td><span class="badge badge-not-started"><span class="dot dot-muted"></span>New</span></td>
           </tr>
         </tbody>
