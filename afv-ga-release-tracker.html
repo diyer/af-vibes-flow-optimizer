@@ -143,6 +143,23 @@
 
     .no-children { padding: 16px 20px; font-size: 12px; color: var(--muted); font-style: italic; }
 
+    .parent-note {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 20px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px; color: var(--muted); line-height: 1.5;
+    }
+    .parent-note .note-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+    .parent-note .note-text { flex: 1; }
+    .parent-note .note-due {
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      padding: 2px 8px; border-radius: 4px; white-space: nowrap; flex-shrink: 0;
+    }
+    .due-tomorrow { background: #2d1f00; color: #f4a261; }
+    .due-tuesday  { background: #0d1f2d; color: #4cc9f0; }
+    .due-tbd      { background: var(--purple-bg); color: var(--purple); }
+
     .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; }
     .dot-green  { background: var(--green); }
     .dot-yellow { background: var(--yellow); }
@@ -412,6 +429,11 @@
       </div>
       <div class="chevron">▶</div>
     </div>
+    <div class="parent-note" onclick="event.stopPropagation()">
+      <span class="note-icon">📅</span>
+      <span class="note-text">Target completion by tomorrow (2026-05-30). Welcome page support (W-22625428) is in Ready for Review — final review and merge pending.</span>
+      <span class="note-due due-tomorrow">Due Tomorrow</span>
+    </div>
     <div class="child-table">
       <table>
         <thead><tr><th>Work ID</th><th>Feature</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
@@ -453,6 +475,11 @@
         <span class="badge badge-in-progress"><span class="dot dot-yellow"></span>In Progress</span>
       </div>
       <div class="chevron">▶</div>
+    </div>
+    <div class="parent-note" onclick="event.stopPropagation()">
+      <span class="note-icon">⚠️</span>
+      <span class="note-text"><strong style="color:var(--text)">UX is complete.</strong> ADX SDK integration (agent orchestration) is scoped for next week. Full ADX support requirements are still being determined — this feature requires agent orchestration capabilities whose scope is not yet fully known. ADX SDK integration work begins next week.</span>
+      <span class="note-due due-tbd">ADX Next Week</span>
     </div>
     <div class="child-table">
       <table>
@@ -550,6 +577,11 @@
       </div>
       <div class="chevron">▶</div>
     </div>
+    <div class="parent-note" onclick="event.stopPropagation()">
+      <span class="note-icon">📅</span>
+      <span class="note-text">Target completion by tomorrow (2026-05-30). afv-library skills update and Toolkit forms (unified MCP/rules/skills UI) are actively in progress. Skills discovery toggle is the remaining new item.</span>
+      <span class="note-due due-tomorrow">Due Tomorrow</span>
+    </div>
     <div class="child-table">
       <table>
         <thead><tr><th>Work ID</th><th>Feature</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
@@ -616,6 +648,11 @@
       </div>
       <div class="chevron">▶</div>
     </div>
+    <div class="parent-note" onclick="event.stopPropagation()">
+      <span class="note-icon">📅</span>
+      <span class="note-text">Target completion by Tuesday (2026-06-03). Feature flag and LLM Express UI are closed. LLMG Express rate limiting investigation and LLM Express agent routing remain.</span>
+      <span class="note-due due-tuesday">Due Tuesday</span>
+    </div>
     <div class="child-table">
       <table>
         <thead><tr><th>Work ID</th><th>Feature</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
@@ -650,7 +687,7 @@
   </div>
 
   <!-- ═══════════════════════════════════════════════════════
-       W-22497279 · Monetization · IN PROGRESS (3/9)
+       W-22497279 · Monetization · IN PROGRESS (3/9) · Due Tuesday
        ═══════════════════════════════════════════════════════ -->
   <div class="parent-card status-in-progress" onclick="toggle(this)">
     <div class="parent-header">
@@ -663,6 +700,11 @@
         <span class="badge badge-in-progress"><span class="dot dot-yellow"></span>In Progress</span>
       </div>
       <div class="chevron">▶</div>
+    </div>
+    <div class="parent-note" onclick="event.stopPropagation()">
+      <span class="note-icon">📅</span>
+      <span class="note-text">Target completion by Tuesday (2026-06-03). Entitlement model set is in Ready for Review; model picker UI and entitlement exposure are in progress. Rate limit store, fallback handlers, and notification remain as new items.</span>
+      <span class="note-due due-tuesday">Due Tuesday</span>
     </div>
     <div class="child-table">
       <table>
@@ -742,6 +784,11 @@
       </div>
       <div class="chevron">▶</div>
     </div>
+    <div class="parent-note" onclick="event.stopPropagation()">
+      <span class="note-icon">📅</span>
+      <span class="note-text">Target completion by Tuesday (2026-06-03). Safe Commands Guard is closed. Settings panel guardrails section, tool permissions drill-down, OOTB auto-approve, and advanced auto-approve rules are queued as new items.</span>
+      <span class="note-due due-tuesday">Due Tuesday</span>
+    </div>
     <div class="child-table">
       <table>
         <thead><tr><th>Work ID</th><th>Feature</th><th>Assignee</th><th>Pts</th><th>Status</th></tr></thead>
@@ -795,6 +842,11 @@
         <span class="badge badge-in-progress"><span class="dot dot-yellow"></span>In Progress</span>
       </div>
       <div class="chevron">▶</div>
+    </div>
+    <div class="parent-note" onclick="event.stopPropagation()">
+      <span class="note-icon">⚠️</span>
+      <span class="note-text">Requires additional feature support from the ADX team — ADX team is actively working on it. <strong style="color:var(--text)">Pre-release can proceed without this feature.</strong> The following items will be added once ADX support is available: <strong style="color:var(--text)">compaction</strong> (auto + manual) and <strong style="color:var(--text)">image/PDF support</strong>. @-mention and SObject context injection is already complete.</span>
+      <span class="note-due due-tbd">Blocked on ADX</span>
     </div>
     <div class="child-table">
       <table>
@@ -852,6 +904,11 @@
         <span class="badge badge-in-progress"><span class="dot dot-yellow"></span>In Progress</span>
       </div>
       <div class="chevron">▶</div>
+    </div>
+    <div class="parent-note" onclick="event.stopPropagation()">
+      <span class="note-icon">📅</span>
+      <span class="note-text">Target completion by Tuesday (2026-06-03). 13 of 16 items are actively in progress by Willie Ruemmele — SalesforceTelemetrySink core, V3-compat shim, agentic chat and MCP event emission, and workbook migrations. 3 items (User-Agent header, workbook audit, extension version filter) are queued as new.</span>
+      <span class="note-due due-tuesday">Due Tuesday</span>
     </div>
     <div class="child-table">
       <table>
